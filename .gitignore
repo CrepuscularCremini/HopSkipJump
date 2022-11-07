@@ -1,0 +1,15 @@
+__pycache__
+cache
+
+# Data stuff
+*.cpg
+*.dbf
+*.prj
+*.sbn
+*.sbx
+*.shp
+*.xml
+*.shx
+*.gpkg
+
+*.graphml
