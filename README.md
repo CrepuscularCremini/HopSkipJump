@@ -1,1 +1,1 @@
-# A Hop, Skip, & A Jump
+[A Hop, Skip, & A Jump](./Graphics/LogoE.png)
