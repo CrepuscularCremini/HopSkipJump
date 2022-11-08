@@ -43,6 +43,12 @@ def network_map_calculation(point, destinations, G, folder = None):
     destinations['bike_color'] = destinations.bike_time.apply(norm_color, args = ['Greens'])
     destinations['walk_color'] = destinations.walk_time.apply(norm_color, args = ['Blues'])
 
+    noweb = '<strong>{0}</strong><br><br>Approximate Travel Time:<br>&nbsp;&nbsp;&nbsp;Bike: {1} minutes<br>&nbsp;&nbsp;&nbsp;&nbsp;Walk: {2} minutes'
+    web = '<a href={3}><strong>{0}</strong></a><br><br>Approximate Travel Time:<br>&nbsp;&nbsp;&nbsp;&nbsp;Bike: {1} minutes<br>&nbsp;&nbsp;&nbsp;&nbsp;Walk: {2} minutes'
+    destinations['popup'] = destinations.apply(lambda r: web.format(r['name'], round(r.bike_time, 1), round(r.walk_time, 0), r.website)\
+                            if pd.notnull(r.website)\
+                            else noweb.format(r['name'], round(r.bike_time, 0), round(r.walk_time, 1)), axis = 1)
+
     if folder:
         destinations.to_crs(epsg = 4326, inplace = True)
         destinations.query('bike_time <= @network_time').to_file(os.path.join(folder, 'bike_network.js'), driver = 'GeoJSON')
@@ -109,11 +115,11 @@ def network_map(out_folder, out_name, start_point):
 
 
 
-
+'kdk.dkd'.split('.')
 
 
 if __name__ == '__main__':
-    G = ox.io.load_graphml('GraphML/denver_walk.graphml')
+    G = ox.io.load_graphml('GraphML/denver.graphml')
     point = (39.74669, -104.99953)
     destinations = gpd.read_file('DenArea')
     destinations.to_crs(epsg = 4326, inplace = True)
