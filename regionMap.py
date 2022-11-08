@@ -5,11 +5,11 @@ import networkx as nx
 from shapely.geometry import Point, LineString, Polygon
 from config import cluster_time, dist, bike_speed, walk_speed
 
-G = ox.io.load_graphml('GraphML/denver.graphml')
-ds = gpd.read_file('DenArea/')
-ds.to_crs(epsg = 4326, inplace = True)
-ds.query('city == "Denver"', inplace = True)
-
+G = ox.io.load_graphml('GraphML/denver_walk.graphml')
+ng = ox.utils_graph.graph_to_gdfs(G, nodes=True, edges=False, node_geometry=True)
+bl = ng.total_bounds
+bbox = (bl[0], bl[1], bl[2], bl[3])
+ds = gpd.read_file('CO/', bbox = bbox)
 
 def make_iso_polys(G, subgraph, edge_buff=25, node_buff=50, infill = False):
     isochrone_polys = []
@@ -17,7 +17,7 @@ def make_iso_polys(G, subgraph, edge_buff=25, node_buff=50, infill = False):
     nodes_gdf = gpd.GeoDataFrame({"id": list(subgraph.nodes)}, geometry=node_points)
     nodes_gdf = nodes_gdf.set_index("id")
 
-    nodes_gdf.set_crs(epsg = 4326, inplace = True)
+    nodes_gdf = nodes_gdf.set_crs(epsg = 4326)
 
     edge_lines = []
     for n_fr, n_to in subgraph.edges():
@@ -27,7 +27,7 @@ def make_iso_polys(G, subgraph, edge_buff=25, node_buff=50, infill = False):
         edge_lines.append(edge_lookup)
 
     edge_gdf = gpd.GeoDataFrame({'geometry' : edge_lines}, geometry = 'geometry')
-    edge_gdf.set_crs(epsg = 4326, inplace = True)
+    edge_gdf = edge_gdf.set_crs(epsg = 4326)
 
     nodes_gdf = ox.project_gdf(nodes_gdf)
     edge_gdf = ox.project_gdf(edge_gdf)
@@ -38,8 +38,8 @@ def make_iso_polys(G, subgraph, edge_buff=25, node_buff=50, infill = False):
     all_gs = list(n) + list(e)
     un = gpd.GeoSeries(all_gs).unary_union
 
-    if infill == True:
-        un = Polygon(un.exterior)
+    # if infill == True:
+    un = Polygon(un.exterior)
 
     new_iso = gpd.GeoDataFrame({'geometry' : [un]}, geometry = 'geometry', crs = n.crs)
     new_iso.to_crs(epsg = 4326, inplace = True)
@@ -111,4 +111,13 @@ def cluster_creation(G, destinations, walk = True, bike = False, walk_G = None, 
         return destinations
 
 dest, walk = cluster_creation(G, ds, walk = True, bike = False)
-ds.head()
+
+import matplotlib.pyplot as plt
+
+fig, ax = plt.subplots(figsize = (10,10))
+walk.plot(ax = ax, cmap = 'Spectral')
+dest.plot(ax = ax, color = 'k')
+ax.set_axis_off()
+
+dest.to_file('RegionMap/dataframe')
+walk.to_file('RegionMap/walk_clusters')
