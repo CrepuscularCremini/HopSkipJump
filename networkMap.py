@@ -7,6 +7,7 @@ import matplotlib
 import os
 import shutil
 from config import bike_speed, walk_speed, network_time, dist
+from mapHelpers import js_var, file_copy
 
 # list(list(G.edges(data=True))[0][-1].keys())
 
@@ -78,20 +79,7 @@ def route_to_geometry(route):
 
     return line_geom
 
-def js_var(filename, var_name):
-    with open(filename, 'r', encoding='utf-8') as file:
-        data = file.readlines()
-
-        data[0] = 'var {0} = {1}\n'.format(var_name, '{')
-
-        with open(filename, 'w', encoding='utf-8') as file:
-            file.writelines(data)
-
-def file_copy(in_folder, out_folder, files):
-    for file in files:
-        shutil.copyfile(os.path.join(in_folder, file), os.path.join(out_folder, file))
-
-def network_map(out_folder, out_name, start_point):
+def network_map(out_folder, start_point, out_name = 'network'):
     lat, long = start_point
     js_var(os.path.join(out_folder, 'bike_network.js'), 'bike')
     js_var(os.path.join(out_folder, 'walk_network.js'), 'walk')
@@ -110,13 +98,6 @@ def network_map(out_folder, out_name, start_point):
     map_path = '{0}/{1}.html'.format(out_folder, out_name)
     with open(map_path, 'w', encoding='utf-8') as file:
         file.writelines(data)
-
-# nx.all_pairs_dijkstra_path_length(G, weight = 'length', cutoff = 100)
-
-
-
-'kdk.dkd'.split('.')
-
 
 if __name__ == '__main__':
     G = ox.io.load_graphml('GraphML/denver.graphml')
