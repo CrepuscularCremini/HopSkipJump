@@ -48,8 +48,8 @@ def make_iso_polys(G, subgraph, edge_buff=25, node_buff=50, infill = False):
 def nodes_polys(G, node, destinations, radius, name, idx, brew_nodes, gdf_list):
     node_subgraph = nx.ego_graph(G, node, radius=radius, distance="length")
     graph_nodes = [str(node) for node in node_subgraph.nodes()]
-    graph_brews = list(set(brew_nodes) & set(graph_nodes))
-    destinations.loc[idx, name] = ','.join(graph_brews)
+    # graph_brews = list(set(brew_nodes) & set(graph_nodes))
+    # destinations.loc[idx, name] = ','.join(graph_brews)
     gdf_list.append(make_iso_polys(G, node_subgraph))
 
 def assign_cluster_id(join_gdf, id_name, destinations, color_ramp):
