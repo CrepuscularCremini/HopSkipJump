@@ -77,12 +77,12 @@ def assign_cluster_id(join_gdf, id_name, destinations, color_ramp):
 
     return mode_destinations
 
-def popup_maker(gdf):
+def popup_maker(gdf, name_field = 'Name', website_field = 'Website'):
     noweb = '<strong>{0}</strong>'
-    web = '<a href={1}><strong>{0}</strong></a>'
-    gdf['popup'] = gdf.apply(lambda r: web.format(r['name'], r.website)\
-                            if pd.notnull(r.website)\
-                            else noweb.format(r['name']), axis = 1)
+    web = '<a href=https://{1}><strong>{0}</strong></a>'
+    gdf['popup'] = gdf.apply(lambda r: web.format(r[name_field], r[website_field])\
+                            if pd.notnull(r[website_field])\
+                            else noweb.format(r[name_field]), axis = 1)
 
 def cluster_creation(G, destinations, walk = True, bike = False, folder = None, walk_G = None, bike_G = None):
     xlist = destinations.geometry.x.to_list()
@@ -101,7 +101,6 @@ def cluster_creation(G, destinations, walk = True, bike = False, folder = None, 
 
     for idx, val in destinations.iterrows():
         node = destinations.loc[idx, 'node']
-
         if walk:
             if walk_G:
                 nodes_polys(walk_G, node, destinations, walk_dist, 'walk_nodes', idx, brew_nodes, walk_gdfs)
@@ -169,11 +168,11 @@ def region_map(out_folder, start_point = None, out_name='region', type = 'walk')
 
 
 if __name__ == "__main__":
-    G = ox.io.load_graphml('GraphML/denver_walk.graphml')
-    ng = ox.utils_graph.graph_to_gdfs(G, nodes=True, edges=False, node_geometry=True)
+    G = ox.io.load_graphml('GraphML/denver_region_walk.graphml')
+    ng = ox.graph_to_gdfs(G, edges = False)
     bl = ng.total_bounds
     bbox = (bl[0], bl[1], bl[2], bl[3])
-    ds = gpd.read_file('CO/', bbox = bbox)
+    ds = gpd.read_file('HSJ_Breweries/DenverBreweries', bbox = bbox)
 
     cluster_creation(G, ds, walk = True, bike = False, folder = 'RegionMap')
     region_map('RegionMap/')

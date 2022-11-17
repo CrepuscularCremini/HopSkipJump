@@ -17,7 +17,7 @@ def norm_color(time, color_ramp):
     hex = matplotlib.colors.rgb2hex(cmap(norm))
     return hex
 
-def network_map_calculation(point, destinations, G, folder = None):
+def network_map_calculation(point, destinations, G, folder = None, name_field = 'Name', website_field = 'Website'):
     lat, long = point
     ptdf = gpd.GeoDataFrame({'Point' : ['Origin'], 'geometry':[Point(long, lat)]}, crs = 'EPSG:4326')
 
@@ -45,10 +45,10 @@ def network_map_calculation(point, destinations, G, folder = None):
     destinations['walk_color'] = destinations.walk_time.apply(norm_color, args = ['Blues'])
 
     noweb = '<strong>{0}</strong><br><br>Approximate Travel Time:<br>&nbsp;&nbsp;&nbsp;Bike: {1} minutes<br>&nbsp;&nbsp;&nbsp;&nbsp;Walk: {2} minutes'
-    web = '<a href={3}><strong>{0}</strong></a><br><br>Approximate Travel Time:<br>&nbsp;&nbsp;&nbsp;&nbsp;Bike: {1} minutes<br>&nbsp;&nbsp;&nbsp;&nbsp;Walk: {2} minutes'
-    destinations['popup'] = destinations.apply(lambda r: web.format(r['name'], round(r.bike_time, 1), round(r.walk_time, 0), r.website)\
-                            if pd.notnull(r.website)\
-                            else noweb.format(r['name'], round(r.bike_time, 0), round(r.walk_time, 1)), axis = 1)
+    web = '<a href=https://{3}><strong>{0}</strong></a><br><br>Approximate Travel Time:<br>&nbsp;&nbsp;&nbsp;&nbsp;Bike: {1} minutes<br>&nbsp;&nbsp;&nbsp;&nbsp;Walk: {2} minutes'
+    destinations['popup'] = destinations.apply(lambda r: web.format(r[name_field], round(r.bike_time, 1), round(r.walk_time, 0), r[website_field])\
+                            if pd.notnull(r[website_field])\
+                            else noweb.format(r[name_field], round(r.bike_time, 0), round(r.walk_time, 1)), axis = 1)
 
     if folder:
         destinations.to_crs(epsg = 4326, inplace = True)
@@ -100,11 +100,9 @@ def network_map(out_folder, start_point, out_name = 'network'):
         file.writelines(data)
 
 if __name__ == '__main__':
-    G = ox.io.load_graphml('GraphML/denver.graphml')
+    G = ox.io.load_graphml('GraphML/denver_local_walk.graphml')
     point = (39.74669, -104.99953)
-    destinations = gpd.read_file('DenArea')
-    destinations.to_crs(epsg = 4326, inplace = True)
+    destinations = gpd.read_file('HSJ_Breweries/DenverBreweries')
     folder = 'NetworkMap'
-
     dest = network_map_calculation(point, destinations, G, folder)
-    network_map(folder, 'network', point)
+    network_map(folder, point, 'network')
