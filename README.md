@@ -1,8 +1,8 @@
 ![A Hop, Skip, & A Jump](./Graphics/LogoE.png)
 
 ### Examples
-- Example Network Map: https://raunchyiguana.github.io/HopSkipJump/NetworkMap/network.html
-- Example Regional Map: https://raunchyiguana.github.io/HopSkipJump/RegionMap/region.html
+- [Network Map - CU Denver Origin](https://raunchyiguana.github.io/HopSkipJump/NetworkMap/network.html)
+- [Regional Map - Central Denver](https://raunchyiguana.github.io/HopSkipJump/RegionMap/region.html)
 
 ### TODO
 - documentation
