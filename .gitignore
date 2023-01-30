@@ -15,3 +15,5 @@ cache
 *.graphml
 
 HSJ_Breweries/
+
+test.py
