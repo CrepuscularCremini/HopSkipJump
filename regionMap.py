@@ -172,7 +172,7 @@ if __name__ == "__main__":
     ng = ox.graph_to_gdfs(G, edges = False)
     bl = ng.total_bounds
     bbox = (bl[0], bl[1], bl[2], bl[3])
-    ds = gpd.read_file('HSJ_Breweries/DenverBreweries', bbox = bbox)
+    ds = gpd.read_file('Breweries/DenverBreweries', bbox = bbox)
 
     cluster_creation(G, ds, walk = True, bike = False, folder = 'RegionMap')
     region_map('RegionMap/')
