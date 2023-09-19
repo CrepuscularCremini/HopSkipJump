@@ -8,6 +8,7 @@
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script type="text/javascript" src="toronto.js"></script>
 		<script type="text/javascript" src="matrix.js"></script>
+		<script src="geolet.js"></script>
   </head>
 	<body>
 		<div id="map"></div>
@@ -31,11 +32,11 @@
 
 			function getIdMatch(id){
 				if (id === mainId) {
-					return ['#800026', 12]
+					return ['#00441b', 12]
 				} else if (reachIds.includes(id)){
-					return ['#FD8D3C', 10]
+					return ['#41ab5d', 10]
 				} else {
-					return ['#FFEDA0', 8]
+					return ['#e5f5e0', 6]
 				}
 			};
 
@@ -66,10 +67,10 @@
 			    return {
 							radius: size,
 							fillColor: color,
-					    color: "#000",
-					    weight: 1,
+					    color: '#00441b',
+					    weight: 2,
 					    opacity: 1,
-					    fillOpacity: 0.8
+					    fillOpacity: 0.7
 			    };
 			}
 
@@ -112,6 +113,11 @@
 
 				brewLayer.addData(brew);
 			};
+
+			L.geolet({
+				position: 'bottomleft'
+			}).addTo(map);
+
 
     </script>
   </body>
