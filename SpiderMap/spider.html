@@ -33,23 +33,21 @@
 			function getIdMatch(id){
 				if (id === mainId) {
 					return 'primary'
-				} else if (reachIds.includes(id)){
-					return 'reach'
 				} else {
-					return 'other'
+					return 'reach'
 				}
 			};
 
 			function clickFeature(e) {
 			    var layer = e.target;
 
-					brewLayer.clearLayers();
+					matrixLayer.clearLayers();
 
 					mainId = layer.feature.properties.id;
-					reachIds = mat[String(mainId)]
+//					reachIds = mat[String(mainId)]
 					info.update(layer.feature.properties);
 
-					brewLayer.addData(brew);
+					matrixLayer.addData(mat);
 			}
 
 			function onEachFeature(feature, layer) {
@@ -57,10 +55,6 @@
 					layer.on({
 							click: clickFeature
 					});
-
-			    if (feature.properties && feature.properties.popup) {
-			        layer.bindPopup(feature.properties.popup);
-			    };
 			}
 
 			var homeIcon = L.icon({
@@ -69,31 +63,50 @@
 			    iconAnchor:   [15,15] // point of the icon which will correspond to marker's location
 			});
 
-			function style(t, latlng) {
-				var genMarkerOptions = {
-					radius: 8,
-					fillColor: null,
-					color: '#00441b',
-					weight: 2,
-					opacity: 1,
-					fillOpacity: 0.7
-				}
+            function getColor(d) {
+                return d > 30 ? '#edf8fb':
+                        d > 25 ? '#ccece6':
+                        d > 20 ? '#99d8c9':
+                        d > 15 ? '#66c2a4':
+                        d > 10 ? '#41ae76':
+                        d > 5 ? '#238b45':
+                                '#005824'
+            };
+
+            function gradientStyle(feature){
+                return{
+                    radius: 8,
+										fillColor: getColor(feature.properties['travel_time_p50']),
+										color: '#005824',
+										weight: 2,
+										opacity: 1,
+										fillOpacity: 0.8
+                }
+            };
+
+			function style(t, feature, latlng) {
 
 				if (t === 'primary'){
 					return L.marker(latlng, {icon: homeIcon});
 				} else if (t === 'reach'){
-					genMarkerOptions.fillColor = '#00441b'
-					return L.circleMarker(latlng, genMarkerOptions);
+					return L.circleMarker(latlng, gradientStyle(feature));
 				} else {
-					genMarkerOptions.fillColor = '#ccece6'
-					return L.circleMarker(latlng, genMarkerOptions);
 				}
 			};
+
+			var baseMarkerOptions = {
+				radius: 8,
+				fillColor: '#969696',
+				color: '#252525',
+				weight: 2,
+				opacity: 1,
+				fillOpacity: 0.5
+			}
 
 			function pointFunction(feature, latlng) {
 					var idx = feature.properties.id;
 					var type = getIdMatch(idx);
-					return style(type, latlng)
+					return style(type, feature, latlng)
 			};
 
 			var info = L.control();
@@ -117,17 +130,27 @@
 
 			var brewLayer = L.geoJSON(brew, {
 				onEachFeature: onEachFeature,
-				pointToLayer: pointFunction,
+				pointToLayer: function (feature, latlng){
+                    return L.circleMarker(latlng, baseMarkerOptions)
+                },
 			}).addTo(map);
 
+            var matrixLayer = L.geoJSON(mat, {
+				onEachFeature: onEachFeature,
+				pointToLayer: pointFunction,
+                filter: function (feature, layer){
+                    return String(feature.properties.from_id) === String(mainId)
+                }
+            }).addTo(map);
+
 			function mapoff(){
-				brewLayer.clearLayers();
+				matrixLayer.clearLayers();
 
 				mainId = null;
 				reachIds = [];
 				info.update();
 
-				brewLayer.addData(brew);
+				matrixLayer.addData(mat);
 			};
 
 			L.geolet({
