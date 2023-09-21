@@ -5,15 +5,28 @@ import os
 os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
 
 gdf = gpd.read_file('Breweries/TorontoBreweries')
-mat = pd.read_csv('Breweries/toronto_brew_matrix.csv')
+bike_mat = pd.read_csv('Breweries/toronto_bike.csv')
+bike_mat.rename(columns = {'travel_time_p50' : 'bike'}, inplace = True)
 
-number = False
-distance = 10
+walk_mat = pd.read_csv('Breweries/toronto_walk.csv')
+walk_mat.rename(columns = {'travel_time_p50' : 'walk'}, inplace = True)
 
-gdf.to_file('toronto.geojson', driver = 'GeoJSON')
+tran_mat = pd.read_csv('Breweries/toronto_transit.csv')
+tran_mat.rename(columns = {'travel_time_p50' : 'transit'}, inplace = True)
+
+for df in [bike_mat, walk_mat, tran_mat]:
+    df.drop(columns = 'Unnamed: 0', inplace = True)
+
+mat = walk_mat.merge(bike_mat, on = ['from_id', 'to_id'], how = 'outer').merge(tran_mat, on = ['from_id', 'to_id'], how = 'outer')
+
+gdf.to_file('SpiderMap/brew.geojson', driver = 'GeoJSON')
 
 mdf = gdf.merge(mat, left_on = 'id', right_on = 'to_id', how = 'right')
-mdf.to_file('matrix.geojson', driver = 'GeoJSON')
+mdf.to_file('SpiderMap/matrix.geojson', driver = 'GeoJSON')
+
+# number = False
+# distance = 10
+#
 #
 # mat.sort_values('travel_time_p50', ascending = True, inplace = True)
 #

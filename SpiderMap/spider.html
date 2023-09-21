@@ -6,14 +6,49 @@
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<link rel="stylesheet" href="map.css">
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<script type="text/javascript" src="toronto.js"></script>
+		<script type="text/javascript" src="brew.js"></script>
 		<script type="text/javascript" src="matrix.js"></script>
 		<script src="geolet.js"></script>
   </head>
 	<body>
 		<div id="map"></div>
-	 <button type="button" id='reset' onclick="mapoff()">Reset View</button>
+		<div id='options'>
+			<fieldset class="inputs" id='mode'>
+					<legend>Mode</legend>
+						<div>
+							<input type="radio" class="modes" id='walk' name="map value" value="walk" checked>
+							<label for="walk">Walk</label>
+						</div>
+						<div>
+							<input type="radio" class="modes" id='bike' name="map value" value="bike">
+							<label for="bike">Bike</label>
+						</div>
+						<div>
+							<input type="radio" class="modes" id='transit' name="map value" value="transit">
+							<label for="transit">Transit</label>
+						</div>
+			</fieldset>
+			<fieldset id='distance'>
+				<legend>Time</legend>
+				<select id="distanceDrop">
+						<option value=30 selected="selected">30 minutes</option>
+						<option value=25>25 minutes</option>
+						<option value=20>20 minutes</option>
+						<option value=15>15 minutes</option>
+						<option value=10>10 minutes</option>
+						<option value=5>5 minutes</option>
+				</select>
+			</fieldset>
+			<div id='spacer'>
+			</div>
+			<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+		</div>
     <script>
+			var mainId;
+			var reachIds = [];
+			var transitType = 'bike';
+			var timeCut = 30;
+
 			var startLoc = [43.7, -79.4];
 			var map = L.map('map').setView(startLoc, 12);
 
@@ -26,9 +61,6 @@
 			});
 
 	    map.addLayer(Stamen_Toner);
-
-			var mainId;
-			var reachIds = [];
 
 			function getIdMatch(id){
 				if (id === mainId) {
@@ -47,7 +79,7 @@
 //					reachIds = mat[String(mainId)]
 					info.update(layer.feature.properties);
 
-					matrixLayer.addData(mat);
+					matrixLayer.addData(matrix);
 			}
 
 			function onEachFeature(feature, layer) {
@@ -55,7 +87,7 @@
 					layer.on({
 							click: clickFeature
 					});
-			}
+			};
 
 			var homeIcon = L.icon({
 			    iconUrl: 'home-base.svg',
@@ -64,19 +96,19 @@
 			});
 
             function getColor(d) {
-                return d > 30 ? '#edf8fb':
-                        d > 25 ? '#ccece6':
-                        d > 20 ? '#99d8c9':
-                        d > 15 ? '#66c2a4':
-                        d > 10 ? '#41ae76':
-                        d > 5 ? '#238b45':
-                                '#005824'
+                return d > timeCut ? '#edf8fb':
+                        d > 5 * timeCut / 6 ? '#ccece6':
+                        d > 4 * timeCut / 6 ? '#99d8c9':
+                        d > 3 * timeCut / 6 ? '#66c2a4':
+                        d > 2 * timeCut / 6 ? '#41ae76':
+                        d > 1 * timeCut / 6 ? '#238b45':
+                                							'#005824'
             };
 
             function gradientStyle(feature){
                 return{
                     radius: 8,
-										fillColor: getColor(feature.properties['travel_time_p50']),
+										fillColor: getColor(feature.properties[transitType]),
 										color: '#005824',
 										weight: 2,
 										opacity: 1,
@@ -91,6 +123,7 @@
 				} else if (t === 'reach'){
 					return L.circleMarker(latlng, gradientStyle(feature));
 				} else {
+					return;
 				}
 			};
 
@@ -135,28 +168,57 @@
                 },
 			}).addTo(map);
 
-            var matrixLayer = L.geoJSON(mat, {
-				onEachFeature: onEachFeature,
-				pointToLayer: pointFunction,
-                filter: function (feature, layer){
-                    return String(feature.properties.from_id) === String(mainId)
-                }
-            }).addTo(map);
+      var matrixLayer = L.geoJSON(matrix, {
+					onEachFeature: onEachFeature,
+					pointToLayer: pointFunction,
+          filter: function (feature, layer){
+						var sameFrom = String(feature.properties.from_id) === String(mainId);
+						var goodTime = parseInt(feature.properties[transitType]) < parseInt(timeCut);
+            return sameFrom && goodTime;
+          }
+      }).addTo(map);
 
 			function mapoff(){
 				matrixLayer.clearLayers();
 
-				mainId = null;
+				mainId;
 				reachIds = [];
+				transitType = 'bike';
+				timeCut = 30;
+
 				info.update();
 
-				matrixLayer.addData(mat);
+				map.setView(startLoc, 12);
+
+				matrixLayer.addData(matrix);
 			};
 
 			L.geolet({
 				position: 'topleft'
 			}).addTo(map);
 
+			for (let input of document.querySelectorAll('input.modes')) {
+				//Listen to 'change' event of all inputs
+				input.onchange = (e) => {
+
+					matrixLayer.clearLayers();
+
+					for (let input of document.querySelectorAll('input.modes')) {
+						if (input.checked) {
+							transitType = input.value
+						}
+					}
+
+					matrixLayer.addData(matrix);
+				}
+			}
+
+			var d = document.getElementById("distanceDrop");
+			d.onchange = (e) => {
+				matrixLayer.clearLayers();
+				timeCut = d.value;
+				matrixLayer.addData(matrix);
+			}
 
     </script>
   </body>

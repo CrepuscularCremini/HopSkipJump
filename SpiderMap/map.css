@@ -3,12 +3,9 @@ html, body {
 }
 
 #map {margin: 5px;
-      height: 95%;
+      height: 80%;
       width: 99%;
       float: center;}
-
-#reset {float: right;
-        margin: 5px;}
 
 .info {
     padding: 6px 8px;
@@ -23,6 +20,29 @@ html, body {
     margin: 0 0 5px;
     color: #777;
 }
+
+#options {
+  display: flex;
+  /* height: 20%; */
+}
+#mode {
+  flex: 15%;
+  align-items: center;
+  float: left;
+}
+
+#distance {
+  flex: 15%;
+}
+
+#spacer {
+  flex: 50%;
+}
+
+#reset {float: right;
+        flex: 20%;
+        margin: 5px;
+        height: 30px;}
 
 /* .component {
   display: flex;

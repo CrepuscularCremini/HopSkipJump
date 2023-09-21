@@ -4,7 +4,7 @@
 
 Precomputed OD Matrix allows for displaying the entire region while also providing on-the-fly access to each brewery's individual network map.
 
-- [Toronto Spider Map](https://CrepuscularCremini.github.io/HopSkipJump/SpiderMap/spider.html))
+- [Toronto Spider Map](https://CrepuscularCremini.github.io/HopSkipJump/SpiderMap/spider.html)
 
 ### Archived Maps - Denver Region
 - [Network Map - CU Denver Origin](https://CrepuscularCremini.github.io/HopSkipJump/NetworkMap/network.html)
