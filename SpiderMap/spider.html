@@ -28,7 +28,7 @@
 							<label for="transit">Transit</label>
 						</div>
 			</fieldset>
-			<fieldset id='distance'>
+			<fieldset class="inputs" id='distance'>
 				<legend>Time</legend>
 				<select id="distanceDrop">
 						<option value=30 selected="selected">30 minutes</option>
@@ -39,9 +39,12 @@
 						<option value=5>5 minutes</option>
 				</select>
 			</fieldset>
-			<div id='spacer'>
-			</div>
-			<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+			<!-- <div id='spacer'>
+			</div> -->
+			<fieldset class="inputs">
+				<legend>View</legend>
+				<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+			</fieldset>
 		</div>
     <script>
 			var mainId;
@@ -53,7 +56,7 @@
 			var map = L.map('map').setView(startLoc, 12);
 
 			var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
-				attribution: 'Tiles <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+				attribution: '<a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash;&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
 				subdomains: 'abcd',
 				minZoom: 0,
 				maxZoom: 20,
@@ -173,7 +176,7 @@
 					pointToLayer: pointFunction,
           filter: function (feature, layer){
 						var sameFrom = String(feature.properties.from_id) === String(mainId);
-						var goodTime = parseInt(feature.properties[transitType]) < parseInt(timeCut);
+						var goodTime = parseInt(feature.properties[transitType]) <= parseInt(timeCut);
             return sameFrom && goodTime;
           }
       }).addTo(map);
@@ -181,7 +184,7 @@
 			function mapoff(){
 				matrixLayer.clearLayers();
 
-				mainId;
+				mainId = null;
 				reachIds = [];
 				transitType = 'bike';
 				timeCut = 30;
