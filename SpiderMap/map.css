@@ -3,7 +3,7 @@ html, body {
 }
 
 #map {margin: 5px;
-      height: 80%;
+      height: 60%;
       width: 99%;
       float: center;}
 
@@ -43,8 +43,3 @@ html, body {
         flex: 20%;
         margin: 5px;
         height: 30px;}
-
-/* .component {
-  display: flex;
-  flex-direction: : column;
-} */
