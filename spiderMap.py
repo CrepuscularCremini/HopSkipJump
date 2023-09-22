@@ -4,14 +4,17 @@ import os
 
 os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
 
-gdf = gpd.read_file('Breweries/TorontoBreweries')
-bike_mat = pd.read_csv('Breweries/toronto_bike.csv')
+city = 'Toronto'
+
+gdf = gpd.read_file(f'Breweries/{city}Breweries')
+# gdf.reset_index(inplace = True, names = 'id')
+bike_mat = pd.read_csv(f'Breweries/{city.lower()}_bike.csv')
 bike_mat.rename(columns = {'travel_time_p50' : 'bike'}, inplace = True)
 
-walk_mat = pd.read_csv('Breweries/toronto_walk.csv')
+walk_mat = pd.read_csv(f'Breweries/{city.lower()}_walk.csv')
 walk_mat.rename(columns = {'travel_time_p50' : 'walk'}, inplace = True)
 
-tran_mat = pd.read_csv('Breweries/toronto_transit.csv')
+tran_mat = pd.read_csv(f'Breweries/{city.lower()}_transit.csv')
 tran_mat.rename(columns = {'travel_time_p50' : 'transit'}, inplace = True)
 
 for df in [bike_mat, walk_mat, tran_mat]:

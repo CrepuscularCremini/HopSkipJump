@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html> -->
+<!DOCTYPE html>
 <html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
 	<head>
 		<title>A Hop, Skip and a Jump</title>
@@ -43,7 +43,7 @@
 			</div> -->
 			<fieldset class="inputs">
 				<legend>View</legend>
-				<button type="button" id='reset' onclick="mapoff()">Reset All</button>
+				<button type="button" id='reset' onclick="mapoff()">Reset View</button>
 			</fieldset>
 		</div>
     <script>
@@ -53,7 +53,7 @@
 			var timeCut = 30;
 
 			var startLoc = [43.7, -79.4];
-			var map = L.map('map');
+			var map = L.map('map').setView(startLoc, 12);
 
 			var Stamen_Toner = L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.{ext}', {
 				attribution: '<a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash;&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
@@ -189,12 +189,9 @@
 				transitType = 'bike';
 				timeCut = 30;
 
-				document.getElementById("bike").checked = true;
-				document.getElementById("distanceDrop").selectedIndex = 0;
-
 				info.update();
 
-				map.fitBounds(brewLayer.getBounds());
+				map.setView(startLoc, 12);
 
 				matrixLayer.addData(matrix);
 			};
@@ -224,10 +221,7 @@
 				matrixLayer.clearLayers();
 				timeCut = d.value;
 				matrixLayer.addData(matrix);
-			};
-
-			// map.setView(startLoc, 12);
-			map.fitBounds(brewLayer.getBounds());
+			}
 
     </script>
   </body>
