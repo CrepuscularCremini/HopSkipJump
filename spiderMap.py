@@ -22,10 +22,10 @@ for df in [bike_mat, walk_mat, tran_mat]:
 
 mat = walk_mat.merge(bike_mat, on = ['from_id', 'to_id'], how = 'outer').merge(tran_mat, on = ['from_id', 'to_id'], how = 'outer')
 
-gdf.to_file('SpiderMap/brew.geojson', driver = 'GeoJSON')
+gdf.to_file(f'SpiderMap/{city}_brew.geojson', driver = 'GeoJSON')
 
 mdf = gdf.merge(mat, left_on = 'id', right_on = 'to_id', how = 'right')
-mdf.to_file('SpiderMap/matrix.geojson', driver = 'GeoJSON')
+mdf.to_file(f'SpiderMap/{city}_matrix.geojson', driver = 'GeoJSON')
 
 # number = False
 # distance = 10

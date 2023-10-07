@@ -16,6 +16,7 @@
 		<div id='options'>
 			<fieldset class="inputs" id='mode'>
 					<legend>Mode</legend>
+					<div class = 'vert'>
 						<div>
 							<input type="radio" class="modes" id='walk' name="map value" value="walk">
 							<label for="walk">Walk</label>
@@ -28,6 +29,7 @@
 							<input type="radio" class="modes" id='transit' name="map value" value="transit">
 							<label for="transit">Transit</label>
 						</div>
+					</div>
 			</fieldset>
 			<fieldset class="inputs" id='distance'>
 				<legend>Time</legend>
@@ -44,7 +46,18 @@
 			</div> -->
 			<fieldset class="inputs">
 				<legend>View</legend>
-				<button type="button" id='reset' onclick="mapoff()">Reset All</button>
+				<div class = 'vert'>
+					<div>
+						<select id="cityDrop">
+								<option value='Toronto' selected="selected">Toronto</option>
+								<option value='Denver'>Denver</option>
+						</select>
+					</div>
+					<div><p></P></div>
+					<div>
+						<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+					</div>
+				</div>
 			</fieldset>
 		</div>
     <script>
@@ -57,8 +70,10 @@
 									'bike' : 'bike-base.svg',
 									'transit' : 'transit-base.svg'};
 
-			var brewrls = {'toronto' : './brew.geojson'};
-			var matrixrls = {'toronto' : './matrix.geojson'};
+			var brewrls = {'Toronto' : './Toronto_brew.geojson',
+											'Denver' : './Denver_brew.geojson'};
+			var matrixrls = {'Toronto' : './Toronto_matrix.geojson',
+											'Denver' : './Denver_matrix.geojson'};
 
 			var brewLayer = false;
 			var matrix = false;
@@ -93,13 +108,13 @@
 				.catch(error => console.log(error.message));
 			}
 
-			load_data('toronto');
+			load_data('Denver');
 
 			var iconUrl = urls['bike'];
 
 			var map = L.map('map', {
-				minZoom: 12,
-				maxZoom: 16
+				minZoom: 10,
+				maxZoom: 18
 			});
 
 			var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -281,6 +296,14 @@
 			d.onchange = (e) => {
 				matrixLayer.clearLayers();
 				timeCut = d.value;
+				matrixLayer.addData(matrix);
+			};
+
+			var c = document.getElementById("cityDrop");
+			c.onchange = (e) => {
+				matrixLayer.clearLayers();
+				cityVal = c.value;
+				load_data(cityVal);
 				matrixLayer.addData(matrix);
 			};
 

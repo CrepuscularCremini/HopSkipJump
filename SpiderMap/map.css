@@ -25,6 +25,11 @@ html, body {
   display: flex;
   height: 20%;
 }
+
+.vert {
+  vertical-align: middle;
+}
+
 #mode {
   flex: 30%;
   align-items: center;
