@@ -37,14 +37,16 @@ html, body {
 }
 
 #distance {
-  flex: 30%;
+  flex: 20%;
 }
 
 /* #spacer {
   flex: 20%;
 } */
 
-#reset {flex: 20%;}
+#reset {
+  flex: 30%;
+}
 
 .inputs {
   margin:0, auto;

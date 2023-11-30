@@ -48,6 +48,7 @@
 				<legend>View</legend>
 				<div class = 'vert'>
 					<div>
+						<p>Region Select:</p>
 						<select id="cityDrop">
 								<option value='Toronto' selected="selected">Toronto</option>
 								<option value='Denver'>Denver</option>
@@ -114,7 +115,7 @@
 
 			var map = L.map('map', {
 				minZoom: 10,
-				maxZoom: 18
+				maxZoom: 16
 			});
 
 			var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
