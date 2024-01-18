@@ -52,6 +52,7 @@
 						<select id="cityDrop">
 								<option value='Toronto' selected="selected">Toronto</option>
 								<option value='Denver'>Denver</option>
+								<option value='TB'>Toronto Backup</option>
 						</select>
 					</div>
 					<div><p></P></div>
@@ -72,9 +73,11 @@
 									'transit' : 'transit-base.svg'};
 
 			var brewrls = {'Toronto' : './Toronto_brew.geojson',
-											'Denver' : './Denver_brew.geojson'};
+											'Denver' : './Denver_brew.geojson',
+										'New' : './TB_brew.geojson'};
 			var matrixrls = {'Toronto' : './Toronto_matrix.geojson',
-											'Denver' : './Denver_matrix.geojson'};
+											'Denver' : './Denver_matrix.geojson',
+										'New' : './TB_matrix.geojson'};
 
 			var brewLayer = false;
 			var matrix = false;
@@ -233,11 +236,9 @@
 					onEachFeature: onEachFeature,
 					pointToLayer: pointFunction,
           filter: function (feature, layer){
-
 							var sameFrom = String(feature.properties.from_id) === String(mainId);
 							var goodTime = parseInt(feature.properties[transitType]) <= parseInt(timeCut);
 	            return sameFrom && goodTime;
-
           }
       }).addTo(map);
 
