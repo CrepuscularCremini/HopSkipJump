@@ -77,35 +77,34 @@ os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
 
 fps = {
     'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\gtfs.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\toronto_canada.osm.pbf",
-                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"},
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
+                    'bbox' : (-79.944763,43.199170,-78.774719,44.000718),
+                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
     'Denver' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\gtfs.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\toronto_canada.osm.pbf",
-                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"},
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\rtd.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\denver-boulder_colorado.osm.pbf",
+                    'bbox' : (-105.603333,39.453161,-104.584351,40.233412),
+                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
     'DMV' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
                     'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-rail.zip",
                                 r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-bus.zip"],
                     'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\dc-baltimore_maryland.osm.pbf",
-                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"}
+                    'bbox' : (-77.703552,38.595407,-76.821899,39.113014),
+                    'date' : datetime.datetime(2024, 2, 1, 16, 30)}
 }
+
+
 
 city = 'DMV'
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)
-xmin, ymin, xmax, ymax = (-77.703552,38.595407,-76.821899,39.113014)
+xmin, ymin, xmax, ymax = fps[city]['bbox']
 df = df.cx[xmin:xmax, ymin:ymax].copy()
 
 gtfs = fps[city]['gtfs']
 osm = fps[city]['osm']
-clip = gpd.read_file(fps[city]['clip'])
+date = fps[city]['date']
 
-df.to_crs(epsg = 32617, inplace = True)
-clip.to_crs(epsg = 32617, inplace = True)
-
-df = df.clip(clip)
-df.to_crs(epsg = 4326, inplace = True)
-
-hsjCalculator(df, osm, gtfs, datetime.datetime(2024, 2, 1, 4, 30), 'DMV')
+hsjCalculator(df, osm, gtfs, date, city)
