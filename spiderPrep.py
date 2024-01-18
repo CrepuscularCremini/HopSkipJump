@@ -9,7 +9,7 @@ pd.set_option('display.max_rows', 500)
 pd.set_option('display.max_columns', 500)
 pd.set_option('display.width', 1000)
 
-def hsjCalculator(df, osm, gtfs, name):
+def hsjCalculator(df, osm, gtfs, departure, name):
     try:
         df.id.head()
     except AttributeError:
@@ -54,7 +54,7 @@ def hsjCalculator(df, osm, gtfs, name):
         origins=df,
         destinations=df,
 
-        departure=datetime.datetime(2023, 1, 1, 8, 30),
+        departure=departure,
         departure_time_window = datetime.timedelta(hours = 1),
 
         transport_modes= [r5py.TransportMode.TRANSIT,r5py.TransportMode.WALK],
@@ -75,11 +75,32 @@ def hsjCalculator(df, osm, gtfs, name):
 
 os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
 
-df = gpd.read_file(r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries")
-gtfs = [r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\gtfs.zip"]
-osm = r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\toronto_canada.osm.pbf"
+fps = {
+    'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\gtfs.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\toronto_canada.osm.pbf",
+                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"},
+    'Denver' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\gtfs.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Toronto\Classes\SpaceTime\f\networkAnalysis\poa\toronto_canada.osm.pbf",
+                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"},
+    'DMV' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-rail.zip",
+                                r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-bus.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\dc-baltimore_maryland.osm.pbf",
+                    'clip' : r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp"}
+}
 
-clip = gpd.read_file(r"C:\Users\Brenn\Downloads\toronto-boundary-wgs84\citygcs_regional_mun_wgs84.shp")
+city = 'DMV'
+
+df = gpd.read_file(fps[city]['df'])
+df.to_crs(epsg = 4326, inplace = True)
+xmin, ymin, xmax, ymax = (-77.703552,38.595407,-76.821899,39.113014)
+df = df.cx[xmin:xmax, ymin:ymax].copy()
+
+gtfs = fps[city]['gtfs']
+osm = fps[city]['osm']
+clip = gpd.read_file(fps[city]['clip'])
 
 df.to_crs(epsg = 32617, inplace = True)
 clip.to_crs(epsg = 32617, inplace = True)
@@ -87,13 +108,4 @@ clip.to_crs(epsg = 32617, inplace = True)
 df = df.clip(clip)
 df.to_crs(epsg = 4326, inplace = True)
 
-hsjCalculator(df, osm, gtfs, 'Toronto')
-
-
-
-
-tm = gpd.read_file('SpiderMap/Toronto_matrix.geojson', driver = 'GeoJSON')
-dm = gpd.read_file('SpiderMap/Denver_matrix.geojson', driver = 'GeoJSON')
-
-tb = gpd.read_file('SpiderMap/Toronto_brew.geojson', driver = 'GeoJSON')
-db = gpd.read_file('SpiderMap/Denver_brew.geojson', driver = 'GeoJSON')
+hsjCalculator(df, osm, gtfs, datetime.datetime(2024, 2, 1, 4, 30), 'DMV')

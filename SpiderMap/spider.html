@@ -7,8 +7,6 @@
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
 		<link rel="stylesheet" href="map.css">
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
-		<!-- <script type="text/javascript" src="brew.js"></script> -->
-		<!-- <script type="text/javascript" src="matrix.js"></script> -->
 		<script src="geolet.js"></script>
   </head>
 	<body>
@@ -42,8 +40,6 @@
 						<option value=5>5 minutes</option>
 				</select>
 			</fieldset>
-			<!-- <div id='spacer'>
-			</div> -->
 			<fieldset class="inputs">
 				<legend>View</legend>
 				<div class = 'vert'>
@@ -52,6 +48,7 @@
 						<select id="cityDrop">
 								<option value='Toronto' selected="selected">Toronto</option>
 								<option value='Denver'>Denver</option>
+								<option value='DMV'>DMV</option>
 								<option value='TB'>Toronto Backup</option>
 						</select>
 					</div>
@@ -69,15 +66,17 @@
 			var timeCut = 30;
 
 			var urls = {'walk' : 'walk-base.svg',
-									'bike' : 'bike-base.svg',
-									'transit' : 'transit-base.svg'};
+						'bike' : 'bike-base.svg',
+						'transit' : 'transit-base.svg'};
 
 			var brewrls = {'Toronto' : './Toronto_brew.geojson',
-											'Denver' : './Denver_brew.geojson',
-										'New' : './TB_brew.geojson'};
+							'Denver' : './Denver_brew.geojson',
+							'DMV' : './DMV_brew.geojson',
+							'New' : './TB_brew.geojson'};
 			var matrixrls = {'Toronto' : './Toronto_matrix.geojson',
-											'Denver' : './Denver_matrix.geojson',
-										'New' : './TB_matrix.geojson'};
+							'Denver' : './Denver_matrix.geojson',
+							'DMV' : './DMV_matrix.geojson',
+							'New' : './TB_matrix.geojson'};
 
 			var brewLayer = false;
 			var matrix = false;
