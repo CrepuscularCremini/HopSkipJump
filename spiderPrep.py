@@ -54,7 +54,7 @@ def hsjCalculator(df, osm, gtfs, departure, name):
         origins=df,
         destinations=df,
 
-        departure=departure,
+        departure=date,
         departure_time_window = datetime.timedelta(hours = 1),
 
         transport_modes= [r5py.TransportMode.TRANSIT,r5py.TransportMode.WALK],
