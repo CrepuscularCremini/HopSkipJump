@@ -114,6 +114,9 @@ start = (-79.39949, 43.66239)
 odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
 fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\brewsday"
 
+idx = [507, 492, 1086, 505] # been to on Brewsday
+ab = [487, 488, 493]
+iss = [502, 515, 1178, 490] # been to in general, or other necessary exclusions
 # 502 is Kensington Brewing Co. - not open yet
-idx = [502, 492]
-brewsdayPick(fp, imped = 'all_imped', idx_exclude = idx, bike_max = 30, transit_max = 30)
+
+brewsdayPick(fp, imped = 'all_imped', idx_exclude = idx + ab + iss, bike_max = 20)
