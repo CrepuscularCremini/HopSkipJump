@@ -91,12 +91,26 @@ fps = {
                                 r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-bus.zip"],
                     'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\dc-baltimore_maryland.osm.pbf",
                     'bbox' : (-77.703552,38.595407,-76.821899,39.113014),
-                    'date' : datetime.datetime(2024, 2, 1, 16, 30)}
+                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
+    'NY' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
+                   'gtfs' : [
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_brooklyn.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_bc.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_subway.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_bronx.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_supplemented.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_manhattan.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_staten_island.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_queens.zip"
+                            ],
+                   'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\new-york_new-york.osm.pbf",
+                   'bbox' : (-74.424133,40.394673,-73.641357,40.955011),
+                   'date' : datetime.datetime(2024, 5, 1, 16, 30)}
 }
 
 
 
-city = 'DMV'
+city = 'NY'
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)

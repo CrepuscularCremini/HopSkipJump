@@ -90,33 +90,37 @@ def brewsdayPick(fp, imped = 'all_imped', idx_exclude = False, bike_max = False,
 
 ## Run
 
-fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
-                'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-                'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-                'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
-                'date' : datetime.datetime(2024, 2, 1, 17, 30)}
-        }
+# fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
+#                 'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
+#                 'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
+#                 'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
+#                 'date' : datetime.datetime(2024, 2, 1, 17, 30)}
+#         }
+#
+#
+# city = 'Toronto'
+#
+# df = gpd.read_file(fps[city]['df'])
+# df.to_crs(epsg = 4326, inplace = True)
+# xmin, ymin, xmax, ymax = fps[city]['bbox']
+# df = df.cx[xmin:xmax, ymin:ymax].copy()
+#
+# gtfs = fps[city]['gtfs']
+# osm = fps[city]['osm']
+# date = fps[city]['date']
+#
+# start = (-79.39949, 43.66239)
+#
+# odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
 
-
-city = 'Toronto'
-
-df = gpd.read_file(fps[city]['df'])
-df.to_crs(epsg = 4326, inplace = True)
-xmin, ymin, xmax, ymax = fps[city]['bbox']
-df = df.cx[xmin:xmax, ymin:ymax].copy()
-
-gtfs = fps[city]['gtfs']
-osm = fps[city]['osm']
-date = fps[city]['date']
-
-start = (-79.39949, 43.66239)
-
-odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
 fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\brewsday"
 
-idx = [507, 492, 1086, 505] # been to on Brewsday
-ab = [487, 488, 493]
-iss = [502, 515, 1178, 490] # been to in general, or other necessary exclusions
-# 502 is Kensington Brewing Co. - not open yet
+idx = [507, 492, 1086, 505, 1255, 1212, 491, 490] # been to on Brewsday
+ab = [487, 488, 493] # not vibing
+iss = [502, 515, 1178, 495] # necessary exclusions
+    # 502 - Kensington Brewery - not open
+    # 515 - Ace Hill -
+    # 1178 - Steadfast - not open on Tuesdays
+    # 495 - Laylow - permanently closed
 
 brewsdayPick(fp, imped = 'all_imped', idx_exclude = idx + ab + iss, bike_max = 20)
