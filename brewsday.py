@@ -90,7 +90,7 @@ def brewsdayPick(fp, imped = 'all_imped', impval = 2, bike_weight = 1, transit_w
 
 ## Run
 
-fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
+fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
                 'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
                 'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
                 'bbox' : (-79.5019,43.5938,-79.2296,43.6848),

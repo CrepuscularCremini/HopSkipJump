@@ -76,7 +76,7 @@ def hsjCalculator(df, osm, gtfs, departure, name):
 os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
 
 fps = {
-    'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
+    'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
                     'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
                     'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
                     'bbox' : (-79.944763,43.199170,-78.774719,44.000718),
@@ -117,7 +117,7 @@ fps = {
 
 
 
-city = 'Honolulu'
+city = 'Toronto'
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)
