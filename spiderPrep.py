@@ -105,12 +105,19 @@ fps = {
                             ],
                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\new-york_new-york.osm.pbf",
                    'bbox' : (-74.424133,40.394673,-73.641357,40.955011),
-                   'date' : datetime.datetime(2024, 5, 1, 16, 30)}
+                   'date' : datetime.datetime(2024, 5, 1, 16, 30)},
+    'Honolulu' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\hon_DTS.zip",
+                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\hon_TheBus.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\honolulu_hawaii.osm.pbf",
+                    'bbox' : (-158.332214,21.212580,-157.556305,21.842379),
+                    'date' : datetime.datetime(2024, 7, 1, 16, 30)},
+
 }
 
 
 
-city = 'NY'
+city = 'Honolulu'
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)

@@ -13,7 +13,7 @@ pd.set_option('display.width', 1000)
 
 ## Functions
 
-def brewsdaySource(df, osm, gtfs, departure, name, fp):
+def brewsdaySource(df, odf, osm, gtfs, date, name, fp):
 
     transport_network = r5py.TransportNetwork(
         osm,
@@ -27,12 +27,12 @@ def brewsdaySource(df, osm, gtfs, departure, name, fp):
 
         transport_modes= [r5py.TransportMode.BICYCLE],
         speed_cycling = 18,
-        max_time = datetime.timedelta(minutes = 31),
+        max_time = datetime.timedelta(minutes = 61),
         max_bicycle_traffic_stress = 2
     )
 
     bike_times = bike.compute_travel_times()
-    bike_times.query('travel_time <= 30', inplace = True)
+#     bike_times.query('travel_time <= 30', inplace = True)
     bike_times.rename(columns = {'travel_time' : 'bike'}, inplace = True)
 
     transit = r5py.TravelTimeMatrixComputer(
@@ -42,14 +42,14 @@ def brewsdaySource(df, osm, gtfs, departure, name, fp):
 
         departure=date,
         departure_time_window = datetime.timedelta(minutes = 30),
-        percentiles = [50],
+        percentiles = [20],
 
         transport_modes= [r5py.TransportMode.TRANSIT,r5py.TransportMode.WALK],
-        max_time = datetime.timedelta(minutes = 31)
+        max_time = datetime.timedelta(minutes = 61)
     )
 
     transit_times = transit.compute_travel_times()
-    transit_times.query('travel_time <= 30', inplace = True)
+#     transit_times.query('travel_time <= 30', inplace = True)
     transit_times.rename(columns = {'travel_time' : 'transit'}, inplace = True)
 
     mat = bike_times.merge(transit_times, on = ['from_id', 'to_id'], how = 'outer')
@@ -58,7 +58,7 @@ def brewsdaySource(df, osm, gtfs, departure, name, fp):
 
     odf.to_file(fp)
 
-def brewsdayPick(fp, imped = 'all_imped', idx_exclude = False, bike_max = False, transit_max = False):
+def brewsdayPick(fp, imped = 'all_imped', impval = 2, bike_weight = 1, transit_weight = 1, idx_exclude = False, bike_max = False, transit_max = False):
     gdf = gpd.read_file(fp)
 
     if bike_max:
@@ -72,9 +72,9 @@ def brewsdayPick(fp, imped = 'all_imped', idx_exclude = False, bike_max = False,
 
     gdf.reset_index(inplace = True)
 
-    gdf['bike_imped'] = (1 / gdf.bike) ** 2
-    gdf['transit_imped'] = (1 / gdf.transit) ** 2
-    gdf['all_imped'] = gdf.bike_imped + gdf.transit_imped
+    gdf['bike_imped'] = (1 / gdf.bike) ** impval
+    gdf['transit_imped'] = (1 / gdf.transit) ** impval
+    gdf['all_imped'] = gdf.bike_imped * bike_weight + gdf.transit_imped * transit_weight
 
     imped = 'all_imped'
 
@@ -90,37 +90,91 @@ def brewsdayPick(fp, imped = 'all_imped', idx_exclude = False, bike_max = False,
 
 ## Run
 
-# fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
-#                 'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-#                 'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-#                 'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
-#                 'date' : datetime.datetime(2024, 2, 1, 17, 30)}
-#         }
-#
-#
-# city = 'Toronto'
-#
-# df = gpd.read_file(fps[city]['df'])
-# df.to_crs(epsg = 4326, inplace = True)
-# xmin, ymin, xmax, ymax = fps[city]['bbox']
-# df = df.cx[xmin:xmax, ymin:ymax].copy()
-#
-# gtfs = fps[city]['gtfs']
-# osm = fps[city]['osm']
-# date = fps[city]['date']
-#
-# start = (-79.39949, 43.66239)
-#
-# odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
+fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\CanadaBreweries",
+                'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
+                'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
+                'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
+                'date' : datetime.datetime(2024, 2, 1, 17, 30)}
+        }
+
+city = 'Toronto'
+
+df = gpd.read_file(fps[city]['df'])
+df.to_crs(epsg = 4326, inplace = True)
+xmin, ymin, xmax, ymax = fps[city]['bbox']
+df = df.cx[xmin:xmax, ymin:ymax].copy()
+
+gtfs = fps[city]['gtfs']
+osm = fps[city]['osm']
+date = fps[city]['date']
+
+start = (-79.4079, 43.6566)
+
+odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
 
 fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\brewsday"
 
-idx = [507, 492, 1086, 505, 1255, 1212, 491, 490] # been to on Brewsday
-ab = [487, 488, 493] # not vibing
-iss = [502, 515, 1178, 495] # necessary exclusions
-    # 502 - Kensington Brewery - not open
-    # 515 - Ace Hill -
-    # 1178 - Steadfast - not open on Tuesdays
-    # 495 - Laylow - permanently closed
+# brewsdaySource(df, odf, osm, gtfs, date, city, fp)
 
-brewsdayPick(fp, imped = 'all_imped', idx_exclude = idx + ab + iss, bike_max = 20)
+gdf = gpd.read_file(fp)
+
+idx = '''
+501  - Halo - Mar 12
+487  - Mascot Brewery - Mar 19
+1075 - Collective Arts - Mar 26
+499  - Burdock - April 2
+     - Trinity Commons - April 9
+485  - Bellwoods Brewery - April 16
+515  - Left Field - April 23
+     - Blue Jays - April 30
+     - International - April 30
+486  - Goose Island - May 7
+1199 - Great Lakes Brewery - May 7
+1242 - Something in the Water - May 14
+488  - Bar Hop - May 21
+     - Blue Jays - May 21
+507  - Blood Brothers - May 26
+501  - Halo - May 26
+490  - Bandit - May 26
+484  - Northern Maverick - May 28
+1151 - True History Brewing - June 4
+497  - Saulter Street Brewery - June 11
+498  - Eastbound Brewing Company - June 11
+508  - High Park Brewery - June 18
+480  - Amsterdam Brewhouse - June 25
+     - International
+'''
+
+idx = [x.split('-')[0].strip() for x in idx.split('\n')]
+idx = [int(x) for x in idx if x != '']
+
+ab = '''
+482  - Belgian Moon
+483  - Steam Whistle
+'''
+ab = [x.split('-')[0].strip() for x in ab.split('\n')]
+ab = [int(x) for x in ab if x != '']
+
+iss = '''
+496  - Kensington Brewery - not open yet
+509  - Ace Hill -
+1167 - Steadfast - not open on Tuesdays
+516  - Louis Cifer - perm closed
+481  - Liberty Commons - too restauranty imo
+'''
+iss = [x.split('-')[0].strip() for x in iss.split('\n')]
+iss = [int(x) for x in iss if x != '']
+
+def qual(v):
+    if v in idx:
+        return 'brewsday'
+    elif v in ab or v in iss:
+        return 'issue'
+    else:
+        return 'ripe'
+
+gdf['thing'] = gdf.id.apply(qual)
+# gdf.to_file(fp)
+
+brewsdayPick(fp, imped = 'all_imped', impval = 0.5, bike_weight = 4, transit_weight = 2, bike_max = None, transit_max = None, idx_exclude = idx + ab + iss)
+
