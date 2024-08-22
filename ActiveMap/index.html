@@ -96,7 +96,6 @@
         document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
-            map.setMaxBounds(map.getBounds());
         }
         map.createPane('pane_Basemap_0');
         map.getPane('pane_Basemap_0').style.zIndex = 400;
