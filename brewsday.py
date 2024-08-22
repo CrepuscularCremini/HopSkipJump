@@ -149,6 +149,8 @@ idx = '''
 172 - Henderson Brewing - July 16
     - Granite Brewing - July 20
     - Blue Jays - July 23
+    - Old Flam - July 30
+    - Rainhard - August 6
 '''
 
 idx = [x.split('-')[0].strip() for x in idx.split('\n')]
