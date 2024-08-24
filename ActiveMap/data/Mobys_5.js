@@ -2,8 +2,6 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 "features":[
   {"type":"Feature","properties":{"name":"3 Brewers","addr":"275 Yonge Street","phone":"647-347-6286","web":"https://www.les3brasseurs.ca/en/find-a-3-brasseurs/"},"geometry":{"type":"Point","coordinates":[-79.3804428,43.6555313]}},
 
-  {"type":"Feature","properties":{"name":"Avling Kitchen & Brewery","addr":"1042 Queen Street East","phone":"416-469-1010","web":"https://www.avling.ca/"},"geometry":{"type":"Point","coordinates":[-79.338112099999989,43.6616134]}},
-
   {"type":"Feature","properties":{"name":"Beaches Brewing Company","addr":"1953 Queen Street East","phone":"647-492-3224","web":"https://beachesbrewing.com/"},"geometry":{"type":"Point","coordinates":[-79.3023432,43.6694422]}},
 
   {"type":"Feature","properties":{"name":"Black Lab Brewing","addr":"818 Eastern Avenue","phone":"647-352-2525","web":"http://www.blacklab.beer/"},"geometry":{"type":"Point","coordinates":[-79.3291339,43.6618125]}},
@@ -18,13 +16,9 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 
   {"type":"Feature","properties":{"name":"Goldenfield Brewery","addr":"71 Sunrise Avenue","phone":"833-388-2337","web":"https://goldenfieldbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.3063709,43.7181777]}},
 
-  {"type":"Feature","properties":{"name":"Longslice Brewery","addr":"484 Front Street East","phone":"647-479-2469","web":"https://longslice.com/"},"geometry":{"type":"Point","coordinates":[-79.3546363,43.6537248]}},
-
   {"type":"Feature","properties":{"name":"Mill Street Brew Pub","addr":"21 Tankhouse Lane","phone":null,"web":"https://millstreetbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.358275,43.650441699999988]}},
 
   {"type":"Feature","properties":{"name":"Mill Street Brewery","addr":"125 Bermondsey Road","phone":null,"web":"https://millstreetbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.3136699,43.7186306]}},
-
-  {"type":"Feature","properties":{"name":"Radical Road Brewing Company","addr":"1177 Queen Street East","phone":"647-794-7909","web":"https://www.radicalroadbrew.com/"},"geometry":{"type":"Point","coordinates":[-79.332415,43.662644]}},
 
   {"type":"Feature","properties":{"name":"Red Tape Brewery","addr":"159 Main Street","phone":null,"web":"https://www.redtapebrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.2999358,43.6837502]}}
 
