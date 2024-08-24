@@ -26,7 +26,6 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 
   {"type":"Feature","properties":{"name":"Radical Road Brewing Company","addr":"1177 Queen Street East","phone":"647-794-7909","web":"https://www.radicalroadbrew.com/"},"geometry":{"type":"Point","coordinates":[-79.332415,43.662644]}},
 
-  {"type":"Feature","properties":{"name":"Red Tape Brewery","addr":"159 Main Street","phone":null,"web":"https://www.redtapebrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.2999358,43.6837502]}},
+  {"type":"Feature","properties":{"name":"Red Tape Brewery","addr":"159 Main Street","phone":null,"web":"https://www.redtapebrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.2999358,43.6837502]}}
 
-  {"type":"Feature","properties":{"name":"Rorschach Brewing Co.","addr":"1001 Eastern Avenue","phone":null,"web":"https://www.rorschachbrewing.com/"},"geometry":{"type":"Point","coordinates":[-79.3199255,43.6635357]}}
 ]}
