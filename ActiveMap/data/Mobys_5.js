@@ -16,8 +16,6 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 
   {"type":"Feature","properties":{"name":"Durham Brewing - C'Est What","addr":"67 Front Street East","phone":"416-867-9499","web":"https://cestwhat.com/"},"geometry":{"type":"Point","coordinates":[-79.3734382,43.6484588]}},
 
-  {"type":"Feature","properties":{"name":"Godspeed Brewery","addr":"242 Coxwell Avenue","phone":"416-551-2282","web":"https://godspeedbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.3193904,43.6724103]}},
-
   {"type":"Feature","properties":{"name":"Goldenfield Brewery","addr":"71 Sunrise Avenue","phone":"833-388-2337","web":"https://goldenfieldbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.3063709,43.7181777]}},
 
   {"type":"Feature","properties":{"name":"Longslice Brewery","addr":"484 Front Street East","phone":"647-479-2469","web":"https://longslice.com/"},"geometry":{"type":"Point","coordinates":[-79.3546363,43.6537248]}},
