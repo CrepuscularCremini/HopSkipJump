@@ -12,8 +12,6 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 
   {"type":"Feature","properties":{"name":"Common Good Beer Company","addr":"475 Ellesmere Road","phone":"416-639-6579","web":"http://commongoodbeer.com"},"geometry":{"type":"Point","coordinates":[-79.2959038,43.7619951]}},
 
-  {"type":"Feature","properties":{"name":"Durham Brewing - C'Est What","addr":"67 Front Street East","phone":"416-867-9499","web":"https://cestwhat.com/"},"geometry":{"type":"Point","coordinates":[-79.3734382,43.6484588]}},
-
   {"type":"Feature","properties":{"name":"Goldenfield Brewery","addr":"71 Sunrise Avenue","phone":"833-388-2337","web":"https://goldenfieldbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.3063709,43.7181777]}},
 
   {"type":"Feature","properties":{"name":"Mill Street Brew Pub","addr":"21 Tankhouse Lane","phone":null,"web":"https://millstreetbrewery.com/"},"geometry":{"type":"Point","coordinates":[-79.358275,43.650441699999988]}},
