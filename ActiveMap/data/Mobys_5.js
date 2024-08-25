@@ -6,8 +6,6 @@ var json_Mobys_5 = {"type":"FeatureCollection","name":"Mobys_5","crs":{"type":"n
 
   {"type":"Feature","properties":{"name":"Black Lab Brewing","addr":"818 Eastern Avenue","phone":"647-352-2525","web":"http://www.blacklab.beer/"},"geometry":{"type":"Point","coordinates":[-79.3291339,43.6618125]}},
 
-  {"type":"Feature","properties":{"name":"Brunswick Bierworks","addr":"25 Curity Avenue","phone":"416.285.1269","web":"http://www.brunswickbierworks.com/"},"geometry":{"type":"Point","coordinates":[-79.3168415,43.7101335]}},
-
   {"type":"Feature","properties":{"name":"Cheetah International Brewers","addr":"12-75 Milliken Road","phone":"416-292-3434","web":"http://www.cheetahbeer.com/"},"geometry":{"type":"Point","coordinates":[-79.2661719,43.8310198]}},
 
   {"type":"Feature","properties":{"name":"Common Good Beer Company","addr":"475 Ellesmere Road","phone":"416-639-6579","web":"http://commongoodbeer.com"},"geometry":{"type":"Point","coordinates":[-79.2959038,43.7619951]}},
