@@ -142,6 +142,7 @@ idx = '''
 295 - Saulter Street Brewery - June 11
 129 - Eastbound Brewing Company - June 11
 173 - High Park Brewery - June 18
+209 - (Lost Craft - June 18)
 15  - Amsterdam Brewhouse - June 25
     - International
 48  - Big Rock Liberty Commons - July 9
@@ -149,23 +150,32 @@ idx = '''
 172 - Henderson Brewing - July 16
     - Granite Brewing - July 20
     - Blue Jays - July 23
-    - Old Flam - July 30
-    - Rainhard - August 6
+255 - Old Flame - July 30
+278 - Rainhard - August 6
+    - Bellwoods - August 12
+325 - Steamwhistle - August 19
+15  - Amsterdam Brewing - August 19
+27  - Birerria Volo - August 27
+225 - Mill Street - September 3
+185 - Junction Craft - September 10
+
 '''
 
 idx = [x.split('-')[0].strip() for x in idx.split('\n')]
 idx = [int(x) for x in idx if x != '']
 
 ab = '''
-37 - Belgian Moon
-325 - Steam Whistle
+37  - Belgian Moon
+78  - Burdock Kensington
+2   - 3 Brewers - is restaurant chain
 '''
 ab = [x.split('-')[0].strip() for x in ab.split('\n')]
 ab = [int(x) for x in ab if x != '']
 
 iss = '''
 324 - Steadfast - not open on Tuesdays
-212  - Louis Cifer - perm closed
+212 - Louis Cifer - perm closed
+
 '''
 iss = [x.split('-')[0].strip() for x in iss.split('\n')]
 iss = [int(x) for x in iss if x != '']
