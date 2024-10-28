@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<head>
+		<meta charset='utf-8'>
+		<title>A Hop, Skip and a Jump</title>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+		<link rel="stylesheet" href="map.css">
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="geolet.js"></script>
+  </head>
+	<body>
+		<div id="map"></div>
+		<div id='options'>
+			<fieldset class="inputs" id='mode'>
+					<legend>Mode</legend>
+					<div class = 'vert'>
+						<div>
+							<input type="radio" class="modes" id='walk' name="map value" value="walk">
+							<label for="walk">Walk</label>
+						</div>
+						<div>
+							<input type="radio" class="modes" id='bike' name="map value" value="bike" checked>
+							<label for="bike">Bike</label>
+						</div>
+						<div>
+							<input type="radio" class="modes" id='transit' name="map value" value="transit">
+							<label for="transit">Transit</label>
+						</div>
+					</div>
+			</fieldset>
+			<fieldset class="inputs" id='distance'>
+				<legend>Time</legend>
+				<select id="distanceDrop">
+						<option value=30 selected="selected">30 minutes</option>
+						<option value=25>25 minutes</option>
+						<option value=20>20 minutes</option>
+						<option value=15>15 minutes</option>
+						<option value=10>10 minutes</option>
+						<option value=5>5 minutes</option>
+				</select>
+			</fieldset>
+			<fieldset class="inputs">
+				<legend>View</legend>
+				<div class = 'vert'>
+					<div>
+						<p>Region Select:</p>
+						<select id="cityDrop">
+								<option value='Toronto' selected="selected">GHTA (Toronto)</option>
+								<option value='Denver'>Denver Metro</option>
+								<option value='DMV'>DMV (DC)</option>
+								<option value='NY'>NY</option>
+								<option value='Hon'>Honolulu</option>
+						</select>
+					</div>
+					<div><p></P></div>
+					<div>
+						<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+    <script>
+			var mainId;
+			var reachIds = [];
+			var transitType = 'bike';
+			var timeCut = 30;
+
+			var urls = {'walk' : 'walk-base.svg',
+						'bike' : 'bike-base.svg',
+						'transit' : 'transit-base.svg'};
+
+			var brewrls = {'Toronto' : './Toronto_brew.geojson',
+							'Denver' : './Denver_brew.geojson',
+							'DMV' : './DMV_brew.geojson',
+							'NY' : './NY_brew.geojson',
+							'TB' : './TB_brew.geojson',
+							'Hon' : './Honolulu_brew.geojson'};
+			var matrixrls = {'Toronto' : './Toronto_matrix.geojson',
+							'Denver' : './Denver_matrix.geojson',
+							'DMV' : './DMV_matrix.geojson',
+							'NY' : './NY_matrix.geojson',
+							'TB' : './TB_matrix.geojson',
+							'Hon' : './Honolulu_matrix.geojson'};
+
+			var brewLayer = false;
+			var matrix = false;
+
+			function load_data(city){
+
+				fetch(brewrls[city], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(brew => {
+					brewLayer = L.geoJSON(brew, {
+						onEachFeature: onEachFeature,
+						pointToLayer: function (feature, latlng){
+												return L.circleMarker(latlng, baseMarkerOptions)
+										},
+					}).addTo(map);
+					//
+					map.fitBounds(brewLayer.getBounds());
+				})
+				.catch(error => console.log(error.message));
+
+				fetch(matrixrls[city], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(json => {
+					matrix = json;
+					matrixLayer.addData(matrix);
+					matrixLayer.bringToFront();
+				})
+				.catch(error => console.log(error.message));
+			}
+
+			load_data('Toronto');
+
+			var iconUrl = urls['bike'];
+
+			var map = L.map('map', {
+				minZoom: 10,
+				maxZoom: 16
+			});
+
+			var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+				attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+			});
+
+			map.addLayer(Esri_WorldGrayCanvas);
+
+			function getIdMatch(id){
+				if (id === mainId) {
+					return 'primary'
+				} else {
+					return 'reach'
+				}
+			};
+
+			function clickFeature(e) {
+			    var layer = e.target;
+
+					matrixLayer.clearLayers();
+
+					mainId = layer.feature.properties.id;
+//					reachIds = mat[String(mainId)]
+					info.update(layer.feature.properties);
+
+					matrixLayer.addData(matrix);
+			}
+
+			function onEachFeature(feature, layer) {
+			    // does this feature have a property named popupContent?
+					layer.on({
+							click: clickFeature
+					});
+			};
+
+			var homeIcon = L.icon({
+			    iconUrl: iconUrl,
+			    iconSize:     [30,30],
+			    iconAnchor:   [15,15]
+			});
+
+			var colorMapper = {
+					'walk' : ['#f1eef6','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b'],
+					'bike' : ['#edf8fb', '#ccece6', '#99d8c9', '#66c2a4', '#41ae76', '#238b45', '#005824'],
+					'transit' : ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486']
+			};
+
+      function getColor(d) {
+          return d > timeCut ? colorMapper[transitType][0]:
+                  d > 5 * timeCut / 6 ? colorMapper[transitType][1]:
+                  d > 4 * timeCut / 6 ? colorMapper[transitType][2]:
+                  d > 3 * timeCut / 6 ? colorMapper[transitType][3]:
+                  d > 2 * timeCut / 6 ? colorMapper[transitType][4]:
+                  d > 1 * timeCut / 6 ? colorMapper[transitType][5]:
+																				colorMapper[transitType][6]
+      };
+
+      function gradientStyle(feature){
+          return{
+              radius: 8,
+							fillColor: getColor(feature.properties[transitType]),
+							color: '#252525',
+							weight: 2,
+							opacity: 1,
+							fillOpacity: 0.8
+          }
+      };
+
+			function style(t, feature, latlng) {
+
+				if (t === 'primary'){
+					return L.marker(latlng, {icon: homeIcon});
+				} else if (t === 'reach'){
+					return L.circleMarker(latlng, gradientStyle(feature));
+				} else {
+					return;
+				}
+			};
+
+			var baseMarkerOptions = {
+				radius: 8,
+				fillColor: '#778899 ',
+				color: '#f7f7f7',
+				weight: 2,
+				opacity: 1,
+				fillOpacity: 0.5
+			};
+
+			function pointFunction(feature, latlng) {
+					var idx = feature.properties.id;
+					var type = getIdMatch(idx);
+					return style(type, feature, latlng)
+			};
+
+			var info = L.control();
+
+			info.onAdd = function (map) {
+			    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			    this.update();
+			    return this._div;
+			};
+
+			// method that we will use to update the control based on feature properties passed
+			info.update = function (props) {
+			    this._div.innerHTML = '<h4>Brewery Details</h4>' +  (props ?
+			        '<img src="home-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
+									props.addr + '</b><br />' +
+									props.phone
+			        : 'Select a Brewery');
+			};
+
+			info.addTo(map);
+
+      var matrixLayer = L.geoJSON(null, {
+					onEachFeature: onEachFeature,
+					pointToLayer: pointFunction,
+          filter: function (feature, layer){
+							var sameFrom = String(feature.properties.from_id) === String(mainId);
+							var goodTime = parseInt(feature.properties[transitType]) <= parseInt(timeCut);
+	            return sameFrom && goodTime;
+          }
+      }).addTo(map);
+
+			function mapoff(){
+				matrixLayer.clearLayers();
+
+				mainId = null;
+				reachIds = [];
+				transitType = 'bike';
+				timeCut = 30;
+				iconUrl = 'bike-base.svg'
+
+				homeIcon = L.icon({
+						iconUrl: iconUrl,
+						iconSize:     [30,30],
+						iconAnchor:   [15,15]
+				});
+
+				document.getElementById("bike").checked = true;
+				document.getElementById("distanceDrop").selectedIndex = 0;
+
+				info.update();
+
+				map.fitBounds(brewLayer.getBounds());
+
+				matrixLayer.addData(matrix);
+			};
+
+			L.geolet({
+				position: 'topleft'
+			}).addTo(map);
+
+			for (let input of document.querySelectorAll('input.modes')) {
+				//Listen to 'change' event of all inputs
+				input.onchange = (e) => {
+
+					matrixLayer.clearLayers();
+
+					for (let input of document.querySelectorAll('input.modes')) {
+						if (input.checked) {
+							transitType = input.value;
+							iconUrl = urls[transitType]
+
+							homeIcon = L.icon({
+									iconUrl: iconUrl,
+									iconSize:     [30,30],
+									iconAnchor:   [15,15]
+							});
+						}
+					}
+
+					matrixLayer.addData(matrix);
+				}
+			}
+
+			var d = document.getElementById("distanceDrop");
+			d.onchange = (e) => {
+				matrixLayer.clearLayers();
+				timeCut = d.value;
+				matrixLayer.addData(matrix);
+			};
+
+			var c = document.getElementById("cityDrop");
+			c.onchange = (e) => {
+				matrixLayer.clearLayers();
+				cityVal = c.value;
+				load_data(cityVal);
+				matrixLayer.addData(matrix);
+			};
+
+			// var legend = L.control({position: 'bottomright'});
+			//
+			// legend.onAdd = function (map) {
+			//
+			//     var div = L.DomUtil.create('div', 'info legend'),
+			//         grades = [1 * timeCut / 6, 2 * timeCut / 6, 3 * timeCut / 6, 4 * timeCut / 6, 5 * timeCut / 6, timeCut],
+			//         labels = [];
+			//
+			//     // loop through our density intervals and generate a label with a colored square for each interval
+			//     for (var i = 0; i < grades.length; i++) {
+			// 				d = 6-i
+			//         div.innerHTML +=
+			//             '<i style="background:' + colorMapper[transitType][d] + '"></i> ' +
+			//             grades[d] + (grades[d + 1] ? '&ndash;' + grades[d + 1] + '<br>' : '+');
+			//     }
+			//
+			//     return div;
+			// };
+			//
+			// legend.addTo(map);
+    </script>
+  </body>
+</html>
