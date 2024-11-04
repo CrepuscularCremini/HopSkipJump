@@ -32,7 +32,7 @@
 			<fieldset class="inputs" id='distance'>
 				<legend>Time</legend>
 				<select id="distanceDrop">
-						<option value=30 selected="selected">30 minutes</option>
+						<option value=30>30 minutes</option>
 						<option value=25>25 minutes</option>
 						<option value=20>20 minutes</option>
 						<option value=15>15 minutes</option>
@@ -46,8 +46,8 @@
 					<div>
 						<p>Region Select:</p>
 						<select id="cityDrop">
-								<option value='Toronto' selected="selected">GHTA (Toronto)</option>
-								<option value='Denver'>Denver Metro</option>
+								<option value='Tor'>GHTA (Toronto)</option>
+								<option value='Den'>Denver Metro</option>
 								<option value='DMV'>DMV (DC)</option>
 								<option value='NY'>NY</option>
 								<option value='Hon'>Honolulu</option>
@@ -65,19 +65,36 @@
 			var reachIds = [];
 			var transitType = 'bike';
 			var timeCut = 30;
+			var cityParam = window.location.search.substring(1)
+
+			if (cityParam === ""){
+				cityParam = "Tor"
+				document.getElementById("cityDrop").selectedIndex = 0;
+			} else {
+				var options = document.getElementById('cityDrop').options
+				for (let i= 0; i < options.length; i++) {
+					if (options[i].value === cityParam) {
+						options[i].selected= true;
+						break
+					};
+				};
+			};
+
+			document.getElementById("distanceDrop").selectedIndex = 0;
+			document.getElementById("bike").checked = true;
 
 			var urls = {'walk' : 'walk-base.svg',
 						'bike' : 'bike-base.svg',
 						'transit' : 'transit-base.svg'};
 
-			var brewrls = {'Toronto' : './Toronto_brew.geojson',
-							'Denver' : './Denver_brew.geojson',
+			var brewrls = {'Tor' : './Toronto_brew.geojson',
+							'Den' : './Denver_brew.geojson',
 							'DMV' : './DMV_brew.geojson',
 							'NY' : './NY_brew.geojson',
 							'TB' : './TB_brew.geojson',
 							'Hon' : './Honolulu_brew.geojson'};
-			var matrixrls = {'Toronto' : './Toronto_matrix.geojson',
-							'Denver' : './Denver_matrix.geojson',
+			var matrixrls = {'Tor' : './Toronto_matrix.geojson',
+							'Den' : './Denver_matrix.geojson',
 							'DMV' : './DMV_matrix.geojson',
 							'NY' : './NY_matrix.geojson',
 							'TB' : './TB_matrix.geojson',
@@ -116,7 +133,7 @@
 				.catch(error => console.log(error.message));
 			}
 
-			load_data('Toronto');
+			load_data(cityParam);
 
 			var iconUrl = urls['bike'];
 
@@ -260,9 +277,6 @@
 						iconSize:     [30,30],
 						iconAnchor:   [15,15]
 				});
-
-				document.getElementById("bike").checked = true;
-				document.getElementById("distanceDrop").selectedIndex = 0;
 
 				info.update();
 
