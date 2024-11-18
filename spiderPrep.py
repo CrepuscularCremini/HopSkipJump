@@ -112,12 +112,16 @@ fps = {
                     'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\honolulu_hawaii.osm.pbf",
                     'bbox' : (-158.332214,21.212580,-157.556305,21.842379),
                     'date' : datetime.datetime(2024, 7, 1, 16, 30)},
-
+    'Vancouver' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\translink.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\vancouver_canada.osm.pbf",
+                    'bbox' : (-123.478088,49.007249,-122.107544,49.430626),
+                    'date' : datetime.datetime(2024, 9, 15, 16, 30)},
 }
 
 
 
-city = 'Toronto'
+city = 'Vancouver'
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)

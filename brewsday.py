@@ -13,7 +13,7 @@ pd.set_option('display.width', 1000)
 
 ## Functions
 
-def brewsdaySource(df, odf, osm, gtfs, date, name, fp):
+def brewsdaySource(df, odf, osm, gtfs, date, name, fp, buffer = False):
 
     transport_network = r5py.TransportNetwork(
         osm,
@@ -117,41 +117,6 @@ fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\nrewsday"
 # brewsdaySource(df, odf, osm, gtfs, date, city, fp)
 
 gdf = gpd.read_file(fp)
-
-idx = '''
-170 - Halo - Mar 12
-219 - Mascot Brewery - Mar 19
-104 - Collective Arts - Mar 26
-77  - Burdock - April 2
-    - Trinity Commons - April 9
-40  - Bellwoods Brewery - April 16
-201 - Left Field - April 23
-200 - (Left Field Other Location)
-    - Blue Jays - April 30
-    - International - April 30
-163 - Goose Island - May 7
-159 - Great Lakes Brewery - May 7
-314 - Something in the Water - May 14
-    - Bar Hop - May 21
-    - Blue Jays - May 21
-56  - Blood Brothers - May 25
-170 - Halo - May 25
-25  - Bandit - May 25
-248 - Northern Maverick - May 28
-356 - True History Brewing - June 4
-295 - Saulter Street Brewery - June 11
-129 - Eastbound Brewing Company - June 11
-173 - High Park Brewery - June 18
-15  - Amsterdam Brewhouse - June 25
-    - International
-48  - Big Rock Liberty Commons - July 9
-201 - Left Field - July 9
-172 - Henderson Brewing - July 16
-    - Granite Brewing - July 20
-    - Blue Jays - July 23
-    - Old Flam - July 30
-    - Rainhard - August 6
-'''
 
 idx = [x.split('-')[0].strip() for x in idx.split('\n')]
 idx = [int(x) for x in idx if x != '']
