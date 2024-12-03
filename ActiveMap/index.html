@@ -12,7 +12,6 @@
         <link rel="stylesheet" href="css/qgis2web.css">
         <link rel="stylesheet" href="css/fontawesome-all.min.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
-        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
         <link rel="stylesheet" href="css/leaflet-measure.css">
         <style>
         html, body, #map {
@@ -39,18 +38,18 @@
         <script src="js/rbush.min.js"></script>
         <script src="js/labelgun.min.js"></script>
         <script src="js/labels.js"></script>
-        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
         <script src="js/leaflet-measure.js"></script>
         <script src="js/leaflet-search.js"></script>
         <script src="data/RapidTransitNetwork_1.js"></script>
-        <script src="data/TorontoCyclingNetwork_2.js"></script>
-        <script src="data/RapidTransitStops_3.js"></script>
-        <script src="data/Breweries_4.js"></script>
-        <script src="data/BeerBars_5.js"></script>
+        <script src="data/Major_OTN_Segments_2.js"></script>
+        <script src="data/TorontoCyclingNetwork_3.js"></script>
+        <script src="data/RapidTransitStops_4.js"></script>
+        <script src="data/Breweries_5.js"></script>
+        <script src="data/BeerBars_6.js"></script>
         <script>
         var map = L.map('map', {
             zoomControl:false, maxZoom:16, minZoom:6
-        }).fitBounds([[43.610492887950436,-79.45815296656775],[43.72270424955983,-79.31276722125523]]);
+        }).fitBounds([[43.60438460818541,-79.45815296656775],[43.728812529324856,-79.31276722125523]]);
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
         var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
@@ -161,7 +160,83 @@
         });
         bounds_group.addLayer(layer_RapidTransitNetwork_1);
         map.addLayer(layer_RapidTransitNetwork_1);
-        function pop_TorontoCyclingNetwork_2(feature, layer) {
+        function pop_Major_OTN_Segments_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OGF_ID'] !== null ? autolinker.link(feature.properties['OGF_ID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TRAIL_NAME'] !== null ? autolinker.link(feature.properties['TRAIL_NAME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TRAIL_ASSOCIATION'] !== null ? autolinker.link(feature.properties['TRAIL_ASSOCIATION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TRAIL_ASSOCIATION_WEBSITE'] !== null ? autolinker.link(feature.properties['TRAIL_ASSOCIATION_WEBSITE'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['PERMITTED_USES'] !== null ? autolinker.link(feature.properties['PERMITTED_USES'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['DESCRIPTION'] !== null ? autolinker.link(feature.properties['DESCRIPTION'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ON_ROAD_FLG'] !== null ? autolinker.link(feature.properties['ON_ROAD_FLG'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TRAIL_LENGTH_KM'] !== null ? autolinker.link(feature.properties['TRAIL_LENGTH_KM'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['LOCATION_ACCURACY'] !== null ? autolinker.link(feature.properties['LOCATION_ACCURACY'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['EFFECTIVE_DATETIME'] !== null ? autolinker.link(feature.properties['EFFECTIVE_DATETIME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SYSTEM_DATETIME'] !== null ? autolinker.link(feature.properties['SYSTEM_DATETIME'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['OBJECTID'] !== null ? autolinker.link(feature.properties['OBJECTID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['SHAPELEN'] !== null ? autolinker.link(feature.properties['SHAPELEN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_Major_OTN_Segments_2_0() {
+            return {
+                pane: 'pane_Major_OTN_Segments_2',
+                opacity: 1,
+                color: 'rgba(76,86,106,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Major_OTN_Segments_2');
+        map.getPane('pane_Major_OTN_Segments_2').style.zIndex = 402;
+        map.getPane('pane_Major_OTN_Segments_2').style['mix-blend-mode'] = 'normal';
+        var layer_Major_OTN_Segments_2 = new L.geoJson(json_Major_OTN_Segments_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Major_OTN_Segments_2',
+            layerName: 'layer_Major_OTN_Segments_2',
+            pane: 'pane_Major_OTN_Segments_2',
+            onEachFeature: pop_Major_OTN_Segments_2,
+            style: style_Major_OTN_Segments_2_0,
+        });
+        bounds_group.addLayer(layer_Major_OTN_Segments_2);
+        map.addLayer(layer_Major_OTN_Segments_2);
+        function pop_TorontoCyclingNetwork_3(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <td colspan="2">' + (feature.properties['_id'] !== null ? autolinker.link(feature.properties['_id'].toLocaleString()) : '') + '</td>\
@@ -255,9 +330,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_TorontoCyclingNetwork_2_0() {
+        function style_TorontoCyclingNetwork_3_0() {
             return {
-                pane: 'pane_TorontoCyclingNetwork_2',
+                pane: 'pane_TorontoCyclingNetwork_3',
                 opacity: 1,
                 color: 'rgba(76,86,106,1.0)',
                 dashArray: '',
@@ -268,21 +343,21 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_TorontoCyclingNetwork_2');
-        map.getPane('pane_TorontoCyclingNetwork_2').style.zIndex = 402;
-        map.getPane('pane_TorontoCyclingNetwork_2').style['mix-blend-mode'] = 'normal';
-        var layer_TorontoCyclingNetwork_2 = new L.geoJson(json_TorontoCyclingNetwork_2, {
+        map.createPane('pane_TorontoCyclingNetwork_3');
+        map.getPane('pane_TorontoCyclingNetwork_3').style.zIndex = 403;
+        map.getPane('pane_TorontoCyclingNetwork_3').style['mix-blend-mode'] = 'normal';
+        var layer_TorontoCyclingNetwork_3 = new L.geoJson(json_TorontoCyclingNetwork_3, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_TorontoCyclingNetwork_2',
-            layerName: 'layer_TorontoCyclingNetwork_2',
-            pane: 'pane_TorontoCyclingNetwork_2',
-            onEachFeature: pop_TorontoCyclingNetwork_2,
-            style: style_TorontoCyclingNetwork_2_0,
+            dataVar: 'json_TorontoCyclingNetwork_3',
+            layerName: 'layer_TorontoCyclingNetwork_3',
+            pane: 'pane_TorontoCyclingNetwork_3',
+            onEachFeature: pop_TorontoCyclingNetwork_3,
+            style: style_TorontoCyclingNetwork_3_0,
         });
-        bounds_group.addLayer(layer_TorontoCyclingNetwork_2);
-        map.addLayer(layer_TorontoCyclingNetwork_2);
-        function pop_RapidTransitStops_3(feature, layer) {
+        bounds_group.addLayer(layer_TorontoCyclingNetwork_3);
+        map.addLayer(layer_TorontoCyclingNetwork_3);
+        function pop_RapidTransitStops_4(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
@@ -296,9 +371,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_RapidTransitStops_3_0() {
+        function style_RapidTransitStops_4_0() {
             return {
-                pane: 'pane_RapidTransitStops_3',
+                pane: 'pane_RapidTransitStops_4',
                 shape: 'diamond',
                 radius: 3.0,
                 opacity: 1,
@@ -313,27 +388,27 @@
                 interactive: false,
             }
         }
-        map.createPane('pane_RapidTransitStops_3');
-        map.getPane('pane_RapidTransitStops_3').style.zIndex = 403;
-        map.getPane('pane_RapidTransitStops_3').style['mix-blend-mode'] = 'normal';
-        var layer_RapidTransitStops_3 = new L.geoJson(json_RapidTransitStops_3, {
+        map.createPane('pane_RapidTransitStops_4');
+        map.getPane('pane_RapidTransitStops_4').style.zIndex = 404;
+        map.getPane('pane_RapidTransitStops_4').style['mix-blend-mode'] = 'normal';
+        var layer_RapidTransitStops_4 = new L.geoJson(json_RapidTransitStops_4, {
             attribution: '',
             interactive: false,
-            dataVar: 'json_RapidTransitStops_3',
-            layerName: 'layer_RapidTransitStops_3',
-            pane: 'pane_RapidTransitStops_3',
-            onEachFeature: pop_RapidTransitStops_3,
+            dataVar: 'json_RapidTransitStops_4',
+            layerName: 'layer_RapidTransitStops_4',
+            pane: 'pane_RapidTransitStops_4',
+            onEachFeature: pop_RapidTransitStops_4,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.shapeMarker(latlng, style_RapidTransitStops_3_0(feature));
+                return L.shapeMarker(latlng, style_RapidTransitStops_4_0(feature));
             },
         });
-        bounds_group.addLayer(layer_RapidTransitStops_3);
-        map.addLayer(layer_RapidTransitStops_3);
-        function pop_Breweries_4(feature, layer) {
+        bounds_group.addLayer(layer_RapidTransitStops_4);
+        map.addLayer(layer_RapidTransitStops_4);
+        function pop_Breweries_5(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
@@ -362,9 +437,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_Breweries_4_0() {
+        function style_Breweries_5_0() {
             return {
-                pane: 'pane_Breweries_4',
+                pane: 'pane_Breweries_5',
                 radius: 8.0,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -378,27 +453,27 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_Breweries_4');
-        map.getPane('pane_Breweries_4').style.zIndex = 404;
-        map.getPane('pane_Breweries_4').style['mix-blend-mode'] = 'normal';
-        var layer_Breweries_4 = new L.geoJson(json_Breweries_4, {
+        map.createPane('pane_Breweries_5');
+        map.getPane('pane_Breweries_5').style.zIndex = 405;
+        map.getPane('pane_Breweries_5').style['mix-blend-mode'] = 'normal';
+        var layer_Breweries_5 = new L.geoJson(json_Breweries_5, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_Breweries_4',
-            layerName: 'layer_Breweries_4',
-            pane: 'pane_Breweries_4',
-            onEachFeature: pop_Breweries_4,
+            dataVar: 'json_Breweries_5',
+            layerName: 'layer_Breweries_5',
+            pane: 'pane_Breweries_5',
+            onEachFeature: pop_Breweries_5,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_Breweries_4_0(feature));
+                return L.circleMarker(latlng, style_Breweries_5_0(feature));
             },
         });
-        bounds_group.addLayer(layer_Breweries_4);
-        map.addLayer(layer_Breweries_4);
-        function pop_BeerBars_5(feature, layer) {
+        bounds_group.addLayer(layer_Breweries_5);
+        map.addLayer(layer_Breweries_5);
+        function pop_BeerBars_6(feature, layer) {
             var popupContent = '<table>\
                     <tr>\
                         <th scope="row">Name</th>\
@@ -420,9 +495,9 @@
 			layer.bindPopup(content, { maxHeight: 400 });
         }
 
-        function style_BeerBars_5_0() {
+        function style_BeerBars_6_0() {
             return {
-                pane: 'pane_BeerBars_5',
+                pane: 'pane_BeerBars_6',
                 radius: 8.0,
                 opacity: 1,
                 color: 'rgba(35,35,35,1.0)',
@@ -436,41 +511,32 @@
                 interactive: true,
             }
         }
-        map.createPane('pane_BeerBars_5');
-        map.getPane('pane_BeerBars_5').style.zIndex = 405;
-        map.getPane('pane_BeerBars_5').style['mix-blend-mode'] = 'normal';
-        var layer_BeerBars_5 = new L.geoJson(json_BeerBars_5, {
+        map.createPane('pane_BeerBars_6');
+        map.getPane('pane_BeerBars_6').style.zIndex = 406;
+        map.getPane('pane_BeerBars_6').style['mix-blend-mode'] = 'normal';
+        var layer_BeerBars_6 = new L.geoJson(json_BeerBars_6, {
             attribution: '',
             interactive: true,
-            dataVar: 'json_BeerBars_5',
-            layerName: 'layer_BeerBars_5',
-            pane: 'pane_BeerBars_5',
-            onEachFeature: pop_BeerBars_5,
+            dataVar: 'json_BeerBars_6',
+            layerName: 'layer_BeerBars_6',
+            pane: 'pane_BeerBars_6',
+            onEachFeature: pop_BeerBars_6,
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.circleMarker(latlng, style_BeerBars_5_0(feature));
+                return L.circleMarker(latlng, style_BeerBars_6_0(feature));
             },
         });
-        bounds_group.addLayer(layer_BeerBars_5);
-        var osmGeocoder = new L.Control.Geocoder({
-            collapsed: true,
-            position: 'topleft',
-            text: 'Search',
-            title: 'Testing'
-        }).addTo(map);
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .className += ' fa fa-search';
-        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
-        .title += 'Search for a place';
+        bounds_group.addLayer(layer_BeerBars_6);
         var baseMaps = {};
         var overlaysTree = [
-            {label: '<img src="legend/BeerBars_5.png" /> Beer Bars', layer: layer_BeerBars_5},
-            {label: '<img src="legend/Breweries_4.png" /> Breweries', layer: layer_Breweries_4},
-            {label: '<img src="legend/RapidTransitStops_3.png" /> Rapid Transit Stops', layer: layer_RapidTransitStops_3},
-            {label: '<img src="legend/TorontoCyclingNetwork_2.png" /> Toronto Cycling Network', layer: layer_TorontoCyclingNetwork_2},
+            {label: '<img src="legend/BeerBars_6.png" /> Beer Bars', layer: layer_BeerBars_6},
+            {label: '<img src="legend/Breweries_5.png" /> Breweries', layer: layer_Breweries_5},
+            {label: '<img src="legend/RapidTransitStops_4.png" /> Rapid Transit Stops', layer: layer_RapidTransitStops_4},
+            {label: '<img src="legend/TorontoCyclingNetwork_3.png" /> Toronto Cycling Network', layer: layer_TorontoCyclingNetwork_3},
+            {label: '<img src="legend/Major_OTN_Segments_2.png" /> Major_OTN_Segments', layer: layer_Major_OTN_Segments_2},
             {label: '<img src="legend/RapidTransitNetwork_1.png" /> Rapid Transit Network', layer: layer_RapidTransitNetwork_1},
             {label: "Basemap", layer: layer_Basemap_0},]
         var lay = L.control.layers.tree(null, overlaysTree,{
@@ -485,7 +551,7 @@
         lay.addTo(map);
         setBounds();
         map.addControl(new L.Control.Search({
-            layer: layer_Breweries_4,
+            layer: layer_Breweries_5,
             initial: false,
             hideMarkerOnCollapse: true,
             propertyName: 'name'}));

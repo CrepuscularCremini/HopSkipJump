@@ -3,6 +3,7 @@ import pandas as pd
 import geopandas as gpd
 import r5py
 import datetime
+import numpy as np
 import os
 from shapely.geometry import Point
 from random import uniform
@@ -13,7 +14,7 @@ pd.set_option('display.width', 1000)
 
 ## Functions
 
-def brewsdaySource(df, odf, osm, gtfs, date, name, fp, buffer = False):
+def brewsdaySource(df, odf, osm, gtfs, date, name, buffer = False):
 
     transport_network = r5py.TransportNetwork(
         osm,
@@ -50,101 +51,113 @@ def brewsdaySource(df, odf, osm, gtfs, date, name, fp, buffer = False):
 
     transit_times = transit.compute_travel_times()
 #     transit_times.query('travel_time <= 30', inplace = True)
-    transit_times.rename(columns = {'travel_time' : 'transit'}, inplace = True)
+    transit_times.rename(columns = {'travel_time_p20' : 'transit'}, inplace = True)
 
     mat = bike_times.merge(transit_times, on = ['from_id', 'to_id'], how = 'outer')
 
     odf = df.merge(mat, left_on = 'id', right_on = 'to_id')
+    return odf
 
-    odf.to_file(fp)
+def brewsdayFilter(r, filter_list):
+    rv = False
+    bname = r['name'].lower()
+    for comp in filter_list:
+        if comp in bname:
+            rv = True
+    return rv
 
-def brewsdayPick(fp, imped = 'all_imped', impval = 2, bike_weight = 1, transit_weight = 1, idx_exclude = False, bike_max = False, transit_max = False):
-    gdf = gpd.read_file(fp)
+def brewsdayPick(vdf, imped = 'all_imped', impval = 2, bike_weight = 1, transit_weight = 1, filter_col = False, bike_max = False, transit_max = False):
+#     gdf = gpd.read_file(fp)
+
+# bike_max = None
+# transit_max = None
+# filter_col = 'brewery_filter'
+# impval = 2
+# bike_weight = 1
+# transit_weight = 1
 
     if bike_max:
-        gdf.query('bike <= @bike_max', inplace = True)
+        vdf.query('bike <= @bike_max', inplace = True)
     if transit_max:
-        gdf.query('transit <= @transit_max', inplace = True)
-    if idx_exclude:
-        gdf.query('id not in @idx_exclude', inplace = True)
+        vdf.query('transit <= @transit_max', inplace = True)
+    if filter_col:
+        vdf = vdf[vdf[filter_col] != True].copy()
 
-    gdf[['bike', 'travel_tim']] = gdf[['bike', 'travel_tim']].fillna(60)
+    vdf[['bike', 'transit']] = vdf[['bike', 'transit']].fillna(60)
 
-    gdf.reset_index(inplace = True)
+    vdf.reset_index(inplace = True)
 
-    gdf['bike_imped'] = (1 / gdf.bike) ** impval
-    gdf['transit_imped'] = (1 / gdf.travel_tim) ** impval
-    gdf['all_imped'] = gdf.bike_imped * bike_weight + gdf.transit_imped * transit_weight
+    vdf['bike_imped'] = (1 / vdf.bike) ** impval
+    vdf['transit_imped'] = (1 / vdf.transit) ** impval
+    vdf['all_imped'] = vdf.bike_imped * bike_weight + vdf.transit_imped * transit_weight
 
     imped = 'all_imped'
 
-    gdf['imped'] = gdf[imped] / gdf[imped].sum()
+    vdf['imped'] = vdf[imped] / vdf[imped].sum()
 
-    gdf['lower'] = gdf.imped.shift(1, fill_value = 0).cumsum()
-    gdf['upper'] = gdf.imped.cumsum()
+    vdf['lower'] = vdf.imped.shift(1, fill_value = 0).cumsum()
+    vdf['upper'] = vdf.imped.cumsum()
 
     val = uniform(0, 1)
 #     print(val)
-    out_gdf = gdf.query('lower <= @val and upper > @val')
+    out_gdf = vdf.query('lower <= @val and upper > @val')
     print(out_gdf.id.values[0], out_gdf.name.values[0])
 
-## Run
+## Create Matrix
 
-fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
-                'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-                'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-                'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
-                'date' : datetime.datetime(2024, 2, 1, 17, 30)}
-        }
+fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\brewsday_picker.geojson"
 
-city = 'Toronto'
+run_matrix = False
+if run_matrix:
 
-df = gpd.read_file(fps[city]['df'])
-df.to_crs(epsg = 4326, inplace = True)
-xmin, ymin, xmax, ymax = fps[city]['bbox']
-df = df.cx[xmin:xmax, ymin:ymax].copy()
+    fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
+                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
+                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
+                    'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
+                    'date' : datetime.datetime(2024, 2, 1, 17, 30)}
+            }
 
-gtfs = fps[city]['gtfs']
-osm = fps[city]['osm']
-date = fps[city]['date']
+    city = 'Toronto'
 
-start = (-79.4079, 43.6566)
+    df = gpd.read_file(fps[city]['df'])
+    df.to_crs(epsg = 4326, inplace = True)
+    xmin, ymin, xmax, ymax = fps[city]['bbox']
+    df = df.cx[xmin:xmax, ymin:ymax].copy()
 
-odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
+    gtfs = fps[city]['gtfs']
+    osm = fps[city]['osm']
+    date = fps[city]['date']
 
-fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\nrewsday"
+    start = (-79.4079, 43.6566)
 
-# brewsdaySource(df, odf, osm, gtfs, date, city, fp)
+    odf = gpd.GeoDataFrame(pd.DataFrame.from_dict({'id' : [1], 'geometry' : [Point(start)]}), crs = 'EPSG:4326', geometry = 'geometry')
+
+    bds = brewsdaySource(df, odf, osm, gtfs, date, city)
+    bds.to_file(fp, driver = 'GeoJSON')
+
+## Create Filters
+
+ep = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\BrewsdayEvents.csv"
+
+be = pd.read_csv(ep)
+be['Date'] = pd.to_datetime(be.Date, format = "%m/%d/%y")
+
+tod = np.datetime64(datetime.datetime.today())
+buff = tod - np.timedelta64(150, 'D')
+
+be.query('Date >= @buff', inplace = True)
+nb = be.Brewery.str.lower().values.tolist()
+
+iss = '''Steadfast - not open on Tuesdays
+Louis Cifer - perm closed'''
+
+iss = [x.split('-')[0].strip().lower() for x in iss.split('\n')]
+
+ex_list = nb + iss
+
+## Run Brewsday Selector
 
 gdf = gpd.read_file(fp)
+gdf['brewery_filter'] = gdf.apply(brewsdayFilter, args = [ex_list], axis = 1)
 
-idx = [x.split('-')[0].strip() for x in idx.split('\n')]
-idx = [int(x) for x in idx if x != '']
-
-ab = '''
-37 - Belgian Moon
-325 - Steam Whistle
-'''
-ab = [x.split('-')[0].strip() for x in ab.split('\n')]
-ab = [int(x) for x in ab if x != '']
-
-iss = '''
-324 - Steadfast - not open on Tuesdays
-212  - Louis Cifer - perm closed
-'''
-iss = [x.split('-')[0].strip() for x in iss.split('\n')]
-iss = [int(x) for x in iss if x != '']
-
-def qual(v):
-    if v in idx:
-        return 'brewsday'
-    elif v in ab or v in iss:
-        return 'issue'
-    else:
-        return 'ripe'
-
-gdf['thing'] = gdf.id.apply(qual)
-# gdf.to_file(fp)
-
-brewsdayPick(fp, imped = 'all_imped', impval = 0.5, bike_weight = 4, transit_weight = 2, bike_max = None, transit_max = None, idx_exclude = idx + ab + iss)
-
+brewsdayPick(gdf, imped = 'all_imped', impval = 1, bike_weight = 1, transit_weight = 2, bike_max = 30, transit_max = 40, filter_col = 'brewery_filter')
