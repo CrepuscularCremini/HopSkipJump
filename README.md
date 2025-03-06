@@ -1,11 +1,13 @@
 ![A Hop, Skip, & A Jump](./Graphics/LogoE.png)
 
-### Map Types
-Currently there are two types of maps.
-- [Spider Map](https://CrepuscularCremini.github.io/HopSkipJump/SpiderMap/spider.html) - OD matrix showing walk, bike, and transit distances from breweries to other breweries. Designed with brewery crawls in mind, this map lets you filter by distance and mode to other breweries in the region.
-  - Greater Toronto Hamilton Area (GTHA)
-  - DC Metro Area (DMV)
-  - New York City
-  - Denver Metro Area
-  - Honolulu Hawaii
-- [Toronto Biking and Transit Map](https://crepuscularcremini.github.io/HopSkipJump/ActiveMap/index.html) - Designed with longer bike and/or transit rides in mind, this map overlays the Ontario Rapid Transit System and Toronto bike systems on top of the brewery map to allow for bike trip planning. Currently only available for Toronto / Ontario.
+### Maps!!!
+
+- [Crawlables](https://CrepuscularCremini.github.io/HopSkipJump/SpiderMap/spider.html) - For the crawlers, meant for on-the-fly brewery crawls, see the walk, bike, and transit times to all the breweries in the area (or filter by time).
+  - []Greater Toronto Hamilton Area (GTHA)](https://crepuscularcremini.github.io/HopSkipJump/SpiderMap/spider.html?Tor)
+  - [DC Metro Area (DMV)](https://crepuscularcremini.github.io/HopSkipJump/SpiderMap/spider.html?DMV)
+  - [New York City](https://crepuscularcremini.github.io/HopSkipJump/SpiderMap/spider.html?NY)
+  - [Denver Metro Area](https://crepuscularcremini.github.io/HopSkipJump/SpiderMap/spider.html?Den)
+  - [Honolulu Hawaii](https://crepuscularcremini.github.io/HopSkipJump/SpiderMap/spider.html?Hon)
+  - *note all map can be reached from the drop down on the page
+- [Trekkables](https://crepuscularcremini.github.io/HopSkipJump/ActiveMap/index.html) - For the explorers, all of the breweries reachable by rapid transit or bike trails (or both if you don't want to have to bike back), great for a weekend trip to a new area.
+  - [Ontario](https://crepuscularcremini.github.io/HopSkipJump/ActiveMap/index.html)
