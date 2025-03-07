@@ -13,33 +13,34 @@
 	<body>
 		<div id="map"></div>
 		<div id='options'>
-			<fieldset class="inputs" id='mode'>
-					<legend>Mode</legend>
+			<fieldset class="inputs" id='access'>
+					<legend>Brewery Access</legend>
 					<div class = 'vert'>
-						<div>
-							<input type="radio" class="modes" id='walk' name="map value" value="walk">
-							<label for="walk">Walk</label>
-						</div>
-						<div>
-							<input type="radio" class="modes" id='bike' name="map value" value="bike" checked>
-							<label for="bike">Bike</label>
-						</div>
-						<div>
-							<input type="radio" class="modes" id='transit' name="map value" value="transit">
-							<label for="transit">Transit</label>
-						</div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="15" cy="15" r="10" stroke="#2e3440" stroke-width="1" fill="#b48ead" />
+                            </svg>
+                            <span>Bike and Train Access</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="15" cy="15" r="10" stroke="#2e3440" stroke-width="1" fill="#5e81ac" />
+                            </svg>
+                            <span>Bike Access</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="15" cy="15" r="10" stroke="#2e3440" stroke-width="1" fill="#bf616a" />
+                            </svg>
+                            <span>Train Access</span> 
+                        </a>
+                        </div>
 					</div>
-			</fieldset>
-			<fieldset class="inputs" id='distance'>
-				<legend>Time</legend>
-				<select id="distanceDrop">
-						<option value=30>30 minutes</option>
-						<option value=25>25 minutes</option>
-						<option value=20>20 minutes</option>
-						<option value=15>15 minutes</option>
-						<option value=10>10 minutes</option>
-						<option value=5>5 minutes</option>
-				</select>
 			</fieldset>
 			<fieldset class="inputs">
 				<legend>View</legend>
@@ -196,16 +197,26 @@
     				fillOpacity: 1
               }
           };
-            var bikeStyle = {
-                "color": "#5e81ac",
-                "weight": 2,
-                "opacity": 1
+
+            function getWidth(w) {
+                return w === 'High' ? 3 :
+                       w === 'Medium' ? 2 :
+                        1
             };
 
+        function bikeStyle(feature) {
+            return {
+                    color: "#5e81ac",
+                    weight: getWidth(feature.properties['Comfort']),
+                    opacity: 1,
+                    smoothFactor: 5
+            };
+        };
+
             var transitStyle = {
-                "color": "#bf616a",
-                "weight": 3,
-                "opacity": .65
+                color: "#bf616a",
+                weight: 3,
+                opacity: .65
             };
 
             var stationStyle = {
@@ -239,6 +250,11 @@
 			info.addTo(map);
 
             var layerControl = L.control.layers(null, null).addTo(map);
+
+			function mapoff(){
+				map.fitBounds(brewLayer.getBounds());
+			};
+
 
     </script>
   </body>

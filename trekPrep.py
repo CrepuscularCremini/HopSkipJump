@@ -32,6 +32,9 @@ lanes.dropna(subset = 'Comfort', inplace = True)
 
 lanes[['fid', 'Comfort', 'geometry']].to_crs(epsg = 4326).to_file('Trekkables/ontario_bics.geojson')
 
+dl = lanes.dissolve('Comfort').reset_index().explode()
+dl['length'] = dl.length
+
 ## Buffer (simple)
 
 stations['buffer'] = stations.buffer(1000)
@@ -73,4 +76,3 @@ bj.drop(columns = ['StationArea', 'LaneArea'], inplace = True)
 bj.to_crs(epsg = 4326, inplace =True)
 
 bj.to_file('Trekkables/ontario_trek_brews.geojson', driver = 'GeoJSON')
-

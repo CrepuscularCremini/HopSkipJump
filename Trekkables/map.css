@@ -30,19 +30,11 @@ html, body {
   vertical-align: middle;
 }
 
-#mode {
+#access {
   flex: 30%;
   align-items: center;
   float: left;
 }
-
-#distance {
-  flex: 20%;
-}
-
-/* #spacer {
-  flex: 20%;
-} */
 
 #reset {
   flex: 30%;
