@@ -73,55 +73,8 @@ def hsjCalculator(df, osm, gtfs, departure, name):
     mdf = df.merge(mat, left_on = 'id', right_on = 'to_id', how = 'right')
     mdf.to_file(f'SpiderMap/{name}_matrix.geojson', driver = 'GeoJSON')
 
-os.chdir(r'c:\users\brenn\documents\projects\HopSkipJump')
-
-fps = {
-    'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-                    'bbox' : (-79.944763,43.199170,-78.774719,44.000718),
-                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
-    'Denver' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\rtd.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\denver-boulder_colorado.osm.pbf",
-                    'bbox' : (-105.603333,39.453161,-104.584351,40.233412),
-                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
-    'DMV' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-rail.zip",
-                                r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\wmata-bus.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\dc-baltimore_maryland.osm.pbf",
-                    'bbox' : (-77.703552,38.595407,-76.821899,39.113014),
-                    'date' : datetime.datetime(2024, 2, 1, 16, 30)},
-    'NY' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                   'gtfs' : [
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_brooklyn.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_bc.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_subway.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_bronx.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_supplemented.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_manhattan.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_staten_island.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\mta_queens.zip"
-                            ],
-                   'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\new-york_new-york.osm.pbf",
-                   'bbox' : (-74.424133,40.394673,-73.641357,40.955011),
-                   'date' : datetime.datetime(2024, 5, 1, 16, 30)},
-    'Honolulu' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\hon_DTS.zip",
-                            r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\hon_TheBus.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\honolulu_hawaii.osm.pbf",
-                    'bbox' : (-158.332214,21.212580,-157.556305,21.842379),
-                    'date' : datetime.datetime(2024, 7, 1, 16, 30)},
-    'Vancouver' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\breweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\translink.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\vancouver_canada.osm.pbf",
-                    'bbox' : (-123.478088,49.007249,-122.107544,49.430626),
-                    'date' : datetime.datetime(2024, 9, 15, 16, 30)},
-}
-
-
-
 city = 'Vancouver'
+from files import fps
 
 df = gpd.read_file(fps[city]['df'])
 df.to_crs(epsg = 4326, inplace = True)

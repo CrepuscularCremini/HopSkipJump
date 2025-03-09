@@ -101,21 +101,15 @@ def brewsdayPick(vdf, imped = 'all_imped', impval = 2, bike_weight = 1, transit_
     val = uniform(0, 1)
 #     print(val)
     out_gdf = vdf.query('lower <= @val and upper > @val')
+
     print(out_gdf.id.values[0], out_gdf.name.values[0])
 
 ## Create Matrix
 
-fp = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\brewsday_picker.geojson"
+fp = r"Breweries\brewsday_picker.geojson"
 
 run_matrix = False
 if run_matrix:
-
-    fps = {'Toronto' : {'df' : r"c:\users\brenn\documents\projects\HopSkipJump\Breweries\OntarioBreweries",
-                    'gtfs' : [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-                    'osm' : r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-                    'bbox' : (-79.5019,43.5938,-79.2296,43.6848),
-                    'date' : datetime.datetime(2024, 2, 1, 17, 30)}
-            }
 
     city = 'Toronto'
 
@@ -137,7 +131,7 @@ if run_matrix:
 
 ## Create Filters
 
-ep = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\BrewsdayEvents.csv"
+ep = "Breweries/BrewsdayEvents.csv"
 
 be = pd.read_csv(ep)
 be['Date'] = pd.to_datetime(be.Date, format = "%m/%d/%y")
@@ -149,7 +143,8 @@ be.query('Date >= @buff', inplace = True)
 nb = be.Brewery.str.lower().values.tolist()
 
 iss = '''Steadfast - not open on Tuesdays
-Louis Cifer - perm closed'''
+Louis Cifer - perm closed
+3 Brewers - big chain'''
 
 iss = [x.split('-')[0].strip().lower() for x in iss.split('\n')]
 
@@ -160,4 +155,4 @@ ex_list = nb + iss
 gdf = gpd.read_file(fp)
 gdf['brewery_filter'] = gdf.apply(brewsdayFilter, args = [ex_list], axis = 1)
 
-brewsdayPick(gdf, imped = 'all_imped', impval = 1, bike_weight = 1, transit_weight = 2, bike_max = 30, transit_max = 40, filter_col = 'brewery_filter')
+t = brewsdayPick(gdf, imped = 'all_imped', impval = 1, bike_weight = 1, transit_weight = 2, bike_max = 30, transit_max = 40, filter_col = 'brewery_filter')

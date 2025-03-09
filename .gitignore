@@ -16,4 +16,5 @@ cache
 *.graphml
 
 Breweries/
-BeerHalls/
+
+files.py

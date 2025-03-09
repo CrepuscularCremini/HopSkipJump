@@ -78,33 +78,3 @@ bj.drop(columns = ['StationArea', 'LaneArea'], inplace = True)
 bj.to_crs(epsg = 4326, inplace =True)
 
 bj.to_file('Trekkables/ontario_trek_brews.geojson', driver = 'GeoJSON')
-
-##
-
-stations = gpd.read_file('Trekkables/go_stations.geojson')
-brews = gpd.read_file('Crawlables/Toronto_brew.geojson')
-
-gtfs = [r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\ttc.zip"],
-osm = r"C:\Users\Brenn\Documents\Projects\HopSkipJump\Breweries\Data\toronto_canada.osm.pbf",
-bbox = (-79.944763,43.199170,-78.774719,44.000718),
-date = datetime.datetime(2024, 2, 1, 16, 30)
-
-
-transport_network = r5py.TransportNetwork(
-    osm,
-    gtfs
-)
-
-bike = r5py.TravelTimeMatrixComputer(
-    transport_network,
-    origins=brews,
-    destinations=stations,
-transport_modes= [r5py.TransportMode.BICYCLE],
-    speed_cycling = 18,
-    max_time = datetime.timedelta(minutes = 31),
-    max_bicycle_traffic_stress = 2
-)
-
-bike_times = bike.compute_travel_times()
-bike_times.query('travel_time <= 30', inplace = True)
-bike_times.rename(columns = {'travel_time' : 'bike'}, inplace = True)
