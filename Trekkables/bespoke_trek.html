@@ -14,12 +14,12 @@
 		<div id="map"></div>
 		<div id='options'>
 			<fieldset class="inputs" id='access'>
-					<legend>Brewery Access</legend>
+					<legend>Trek Information</legend>
 					<div class = 'vert'>
                         <div class="container">
                         <a>
 							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#5e81ac;stroke-width:8" />
+                                <line x1="0" y1="25" x2="30" y2="25" style="stroke:#5e81ac;stroke-width:8" />
                             </svg>
                             <span>Waterfront Trail</span> 
                         </a>
@@ -27,31 +27,19 @@
                         <div class="container">
                         <a>
 							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#bf616a;stroke-width:8" />
+                                <line x1="0" y1="25" x2="30" y2="25" style="stroke:#bf616a;stroke-width:8" />
                             </svg>
-                            <span>GO Station Access (Marked)</span> 
-                        </a>
+                            <a>//</a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="25" x2="30" y2="25" style="stroke:#d08770;stroke-width:8" />
+                            </svg>
+
+                            <span>Station Access (Marked // Unmarked)</span> 
                         </div>
                         <div class="container">
                         <a>
 							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#d08770;stroke-width:8" />
-                            </svg>
-                            <span>GO Station Access (Unmarked)</span> 
-                        </a>
-                        </div>
-                        <div class="container">
-                        <a>
-							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="15" cy="15" r="10" stroke="#2e3440" stroke-width="1" fill="#a3be8c" />
-                            </svg>
-                            <span>Breweries</span> 
-                        </a>
-                        </div>
-                        <div class="container">
-                        <a>
-							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="15" cy="15" r="7" stroke="#2e3440" stroke-width="1" fill="#bf616a" />
+                                <circle cx="20" cy="20" r="7" stroke="#2e3440" stroke-width="1" fill="#bf616a" />
                             </svg>
                             <span>GO Stations</span> 
                         </a>
@@ -124,6 +112,9 @@
 						pointToLayer: function (feature, latlng){
 												return L.circleMarker(latlng, stationStyle)
 										},
+                        onEachFeature: function (feature, layer) {
+                            layer.bindPopup(feature.properties.LOCATION_N);
+                        },
 					}).addTo(map);
 
                     stationLayer.bringToBack();
@@ -132,7 +123,6 @@
 
 				})
 				.catch(error => console.log(error.message));
-
 
                 //load bike lanes
 				fetch(bikerls[area], {
@@ -275,12 +265,12 @@
 			        '<img src="home-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
 									props.addr + '</b><br />' +
 									props.phone
-			        : 'Select a Brewery');
+			        : '<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="5" stroke="#2e3440" stroke-width="1" fill="#a3be8c" /></svg>Select a Brewery');
 			};
-
+							
 			info.addTo(map);
 
-            var layerControl = L.control.layers(null, null).addTo(map);
+//            var layerControl = L.control.layers(null, null).addTo(map);
 
 			function mapoff(){
 				map.fitBounds(brewLayer.getBounds());
