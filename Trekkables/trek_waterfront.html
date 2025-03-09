@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html xmlns:mso="urn:schemas-microsoft-com:office:office" xmlns:msdt="uuid:C2F41010-65B3-11d1-A29F-00AA00C14882">
+	<head>
+		<meta charset='utf-8'>
+		<title>A Hop, Skip and a Jump</title>
+		 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+		<link rel="stylesheet" href="map.css">
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="geolet.js"></script>
+  </head>
+	<body>
+		<div id="map"></div>
+		<div id='options'>
+			<fieldset class="inputs" id='access'>
+					<legend>Brewery Access</legend>
+					<div class = 'vert'>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#5e81ac;stroke-width:8" />
+                            </svg>
+                            <span>Waterfront Trail</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#bf616a;stroke-width:8" />
+                            </svg>
+                            <span>GO Station Access (Marked)</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <line x1="0" y1="15" x2="30" y2="15" style="stroke:#d08770;stroke-width:8" />
+                            </svg>
+                            <span>GO Station Access (Unmarked)</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="15" cy="15" r="10" stroke="#2e3440" stroke-width="1" fill="#a3be8c" />
+                            </svg>
+                            <span>Breweries</span> 
+                        </a>
+                        </div>
+                        <div class="container">
+                        <a>
+							<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="15" cy="15" r="7" stroke="#2e3440" stroke-width="1" fill="#bf616a" />
+                            </svg>
+                            <span>GO Stations</span> 
+                        </a>
+                        </div>
+
+					</div>
+			</fieldset>
+			<fieldset class="inputs">
+				<legend>View</legend>
+				<div class = 'vert'>
+					<div>
+						<p>Area Select:</p>
+						<select id="areaDrop">
+								<option value='Lakeshore'>Lakeshore</option>
+						</select>
+					</div>
+					<div><p></P></div>
+					<div>
+						<button type="button" id='reset' onclick="mapoff()">Reset View</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+    <script>
+			var map = L.map('map', {
+			});
+
+			var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+				attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ',
+			});
+
+			map.addLayer(Esri_WorldGrayCanvas);
+
+			var areaParam = window.location.search.substring(1)
+
+			if (areaParam === ""){
+				areaParam = "Lakeshore"
+				document.getElementById("areaDrop").selectedIndex = 0;
+			} else {
+				var options = document.getElementById('areaDrop').options
+				for (let i= 0; i < options.length; i++) {
+					if (options[i].value === cityParam) {
+						options[i].selected= true;
+						break
+					};
+				};
+			};
+
+			var brewrls = {'Lakeshore' : './waterfront_breweries.geojson'};
+			var bikerls = {'Lakeshore' : './waterfront_trail.geojson'};
+            var aourls = {'Lakeshore' : './go_access_official.geojson'}
+            var auurls = {'Lakeshore' : './go_access_unofficial.geojson'}
+			var stationrls = {'Lakeshore' : './go_stations.geojson'};
+
+			var brewLayer = false;
+			var bikeLayer = false;
+			var bikeofLayer = false;
+			var bikeunLayer = false;
+            var stationLayer = false;
+
+			function load_data(area){
+
+                //load stations
+				fetch(stationrls[area], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(station => {
+					stationLayer = L.geoJSON(station, {
+						pointToLayer: function (feature, latlng){
+												return L.circleMarker(latlng, stationStyle)
+										},
+					}).addTo(map);
+
+                    stationLayer.bringToBack();
+
+                    //layerControl.addOverlay(stationLayer, "Stations");
+
+				})
+				.catch(error => console.log(error.message));
+
+
+                //load bike lanes
+				fetch(bikerls[area], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(bike => {
+					bikeLayer = L.geoJSON(bike, {
+                        style: bikeStyle
+					}).addTo(map);
+
+                    bikeLayer.bringToBack();
+
+                    //layerControl.addOverlay(bikeLayer, "Bike Trails");
+
+				})
+				.catch(error => console.log(error.message));
+
+                //load official access
+				fetch(aourls[area], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(bikeof => {
+					bikeofLayer = L.geoJSON(bikeof, {
+                        style: bikeofStyle
+					}).addTo(map);
+
+                    bikeofLayer.bringToBack();
+
+                    //layerControl.addOverlay(bikeLayer, "Bike Trails");
+
+				})
+				.catch(error => console.log(error.message));
+
+                //load unofficial access
+				fetch(auurls[area], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(bikeun => {
+					bikeunLayer = L.geoJSON(bikeun, {
+                        style: bikeunStyle
+					}).addTo(map);
+
+                    bikeunLayer.bringToBack();
+
+                    //layerControl.addOverlay(bikeLayer, "Bike Trails");
+
+				})
+				.catch(error => console.log(error.message));
+
+
+                //load breweries
+				fetch(brewrls[area], {
+					method:'GET'
+				})
+				.then(response => response.json())
+				.then(brew => {
+					brewLayer = L.geoJSON(brew, {
+						onEachFeature: onEachFeature,
+						pointToLayer: function (feature, latlng){
+												return L.circleMarker(latlng, brewStyle)
+										},
+					}).addTo(map);
+					//
+					map.fitBounds(brewLayer.getBounds());
+				})
+				.catch(error => console.log(error.message));
+			}
+
+			function clickFeature(e) {
+			    var layer = e.target;
+					info.update(layer.feature.properties);
+			}
+
+			function onEachFeature(feature, layer) {
+			    // does this feature have a property named popupContent?
+					layer.on({
+							click: clickFeature
+					});
+			};
+
+          function getColor(d) {
+              return d === 'Bike and Transit' ? '#b48ead':
+                     d === 'Bike' ? '#5e81ac':
+                     d === 'Transit' ? '#bf616a':
+					'#d8dee9'
+             };
+
+          var brewStyle = {
+   				radius: 8,
+   				fillColor: '#a3be8c',
+   				color: '#2e3440',
+   				weight: 2,
+   				opacity: 1,
+   				fillOpacity: 1
+          };
+
+            var bikeStyle = {
+                color: "#5e81ac",
+                weight: 3,
+                opacity: .75
+            };
+
+            var bikeofStyle = {
+                color: "#bf616a",
+                weight: 3,
+                opacity: .75
+            };
+
+            var bikeunStyle = {
+                color: "#d08770",
+                weight: 3,
+                opacity: .75
+            };
+
+            var stationStyle = {
+    				radius: 6,
+    				fillColor: "#bf616a",
+    				color: '#2e3440',
+    				weight: 2,
+    				opacity: 1,
+    				fillOpacity: 1
+            };
+
+			load_data(areaParam);
+
+			var info = L.control();
+
+			info.onAdd = function (map) {
+			    this._div = L.DomUtil.create('div', 'info'); // create a div with a class "info"
+			    this.update();
+			    return this._div;
+			};
+
+			// method that we will use to update the control based on feature properties passed
+			info.update = function (props) {
+			    this._div.innerHTML = '<h4>Brewery Details</h4>' +  (props ?
+			        '<img src="home-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
+									props.addr + '</b><br />' +
+									props.phone
+			        : 'Select a Brewery');
+			};
+
+			info.addTo(map);
+
+            var layerControl = L.control.layers(null, null).addTo(map);
+
+			function mapoff(){
+				map.fitBounds(brewLayer.getBounds());
+			};
+
+
+    </script>
+  </body>
+</html>
+

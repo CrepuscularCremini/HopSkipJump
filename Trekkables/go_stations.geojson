@@ -1,0 +1,31 @@
+{
+"type": "FeatureCollection",
+"name": "go_stations",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "LOCATION_N": "Ajax", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.042275123801687, 43.848061902647942 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Whitby", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -78.938219006338429, 43.864805384412293 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Oshawa", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -78.885055148473398, 43.870748652900716 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Pickering", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.084597244021893, 43.831615207573883 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Danforth", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.299049757127889, 43.686645619931923 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Scarborough", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.254829254195272, 43.717262021929706 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Eglinton", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.230612216728986, 43.740410974572626 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Guildwood", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.198087073795037, 43.754975186446224 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Rouge Hill", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore East" }, "geometry": { "type": "Point", "coordinates": [ -79.130658919214682, 43.779700643863556 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Hamilton", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.868723599146705, 43.252963170599479 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Exhibition", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.419031518535462, 43.636016792616672 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Mimico", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.496809879963848, 43.616677032681785 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Long Branch", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.544974381104211, 43.592182088671329 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Port Credit", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.587148467876247, 43.556015723583712 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Clarkson", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.634618101855096, 43.512358987729364 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Oakville", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.682464891225919, 43.454896415764345 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Bronte", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.722579036156915, 43.416424559235715 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Appleby", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.760870924560351, 43.379650451555662 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Burlington", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.809054525186625, 43.341176149115391 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Aldershot", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.854456567768793, 43.313236008786923 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Niagara Falls", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Niagara Falls" }, "geometry": { "type": "Point", "coordinates": [ -79.063064825679945, 43.10899703780845 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "St. Catharines", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Niagara Falls" }, "geometry": { "type": "Point", "coordinates": [ -79.25581869468823, 43.147537122711483 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "West Harbour", "STATUS": "Existing", "TECHNOLOGY": "GO Rail", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.864801193141133, 43.266455182059296 ] } },
+{ "type": "Feature", "properties": { "LOCATION_N": "Union", "STATUS": null, "TECHNOLOGY": "GO", "NAME": "Lakeshore West" }, "geometry": { "type": "Point", "coordinates": [ -79.380631473373683, 43.64520416599499 ] } }
+]
+}
