@@ -206,12 +206,6 @@
 					});
 			};
 
-          function getColor(d) {
-              return d === 'Bike and Transit' ? '#b48ead':
-                     d === 'Bike' ? '#5e81ac':
-                     d === 'Transit' ? '#bf616a':
-					'#d8dee9'
-             };
 
           var brewStyle = {
    				radius: 8,
@@ -265,7 +259,7 @@
 			        '<img src="home-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
 									props.addr + '</b><br />' +
 									props.phone
-			        : '<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="5" stroke="#2e3440" stroke-width="1" fill="#a3be8c" /></svg>Select a Brewery');
+			        : '<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="6" stroke="#2e3440" stroke-width="2" fill="#a3be8c" /></svg>Select a Brewery');
 			};
 							
 			info.addTo(map);
