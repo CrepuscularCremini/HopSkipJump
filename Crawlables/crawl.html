@@ -286,10 +286,6 @@
 				matrixLayer.addData(matrix);
 			};
 
-			L.geolet({
-				position: 'topleft'
-			}).addTo(map);
-
 			for (let input of document.querySelectorAll('input.modes')) {
 				//Listen to 'change' event of all inputs
 				input.onchange = (e) => {
@@ -328,26 +324,10 @@
 				matrixLayer.addData(matrix);
 			};
 
-			// var legend = L.control({position: 'bottomright'});
-			//
-			// legend.onAdd = function (map) {
-			//
-			//     var div = L.DomUtil.create('div', 'info legend'),
-			//         grades = [1 * timeCut / 6, 2 * timeCut / 6, 3 * timeCut / 6, 4 * timeCut / 6, 5 * timeCut / 6, timeCut],
-			//         labels = [];
-			//
-			//     // loop through our density intervals and generate a label with a colored square for each interval
-			//     for (var i = 0; i < grades.length; i++) {
-			// 				d = 6-i
-			//         div.innerHTML +=
-			//             '<i style="background:' + colorMapper[transitType][d] + '"></i> ' +
-			//             grades[d] + (grades[d + 1] ? '&ndash;' + grades[d + 1] + '<br>' : '+');
-			//     }
-			//
-			//     return div;
-			// };
-			//
-			// legend.addTo(map);
+			L.geolet({
+				position: 'topleft'
+			}).addTo(map);
+
     </script>
   </body>
 </html>

@@ -78,7 +78,7 @@
 			} else {
 				var options = document.getElementById('areaDrop').options
 				for (let i= 0; i < options.length; i++) {
-					if (options[i].value === cityParam) {
+					if (options[i].value === areaParam) {
 						options[i].selected= true;
 						break
 					};
@@ -255,6 +255,9 @@
 				map.fitBounds(brewLayer.getBounds());
 			};
 
+			L.geolet({
+				position: 'topleft'
+			}).addTo(map);
 
     </script>
   </body>

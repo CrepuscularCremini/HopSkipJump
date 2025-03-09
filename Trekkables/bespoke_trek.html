@@ -53,7 +53,7 @@
 					<div>
 						<p>Area Select:</p>
 						<select id="areaDrop">
-								<option value='Lakeshore'>Lakeshore</option>
+								<option value='Waterfront'>Waterfront</option>
 						</select>
 					</div>
 					<div><p></P></div>
@@ -76,23 +76,23 @@
 			var areaParam = window.location.search.substring(1)
 
 			if (areaParam === ""){
-				areaParam = "Lakeshore"
+				areaParam = "Waterfront"
 				document.getElementById("areaDrop").selectedIndex = 0;
 			} else {
 				var options = document.getElementById('areaDrop').options
 				for (let i= 0; i < options.length; i++) {
-					if (options[i].value === cityParam) {
+					if (options[i].value === areaParam) {
 						options[i].selected= true;
 						break
 					};
 				};
 			};
 
-			var brewrls = {'Lakeshore' : './waterfront_breweries.geojson'};
-			var bikerls = {'Lakeshore' : './waterfront_trail.geojson'};
-            var aourls = {'Lakeshore' : './go_access_official.geojson'}
-            var auurls = {'Lakeshore' : './go_access_unofficial.geojson'}
-			var stationrls = {'Lakeshore' : './go_stations.geojson'};
+			var brewrls = {'Waterfront' : './waterfront_breweries.geojson'};
+			var bikerls = {'Waterfront' : './waterfront_trail.geojson'};
+            var aourls = {'Waterfront' : './go_access_official.geojson'}
+            var auurls = {'Waterfront' : './go_access_unofficial.geojson'}
+			var stationrls = {'Waterfront' : './go_stations.geojson'};
 
 			var brewLayer = false;
 			var bikeLayer = false;
@@ -276,6 +276,9 @@
 				map.fitBounds(brewLayer.getBounds());
 			};
 
+			L.geolet({
+				position: 'topleft'
+			}).addTo(map);
 
     </script>
   </body>
