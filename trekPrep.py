@@ -2,6 +2,9 @@ import pandas as pd
 import geopandas as gpd
 import r5py
 
+import matplotlib as mpl
+from matplotlib.colors import LinearSegmentedColormap
+
 import os
 import datetime
 
@@ -78,3 +81,26 @@ bj.drop(columns = ['StationArea', 'LaneArea'], inplace = True)
 bj.to_crs(epsg = 4326, inplace =True)
 
 bj.to_file('Trekkables/ontario_trek_brews.geojson', driver = 'GeoJSON')
+
+## Create color maps
+
+bmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#5e81ac'])
+gmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#a3be8c'])
+pmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#b48ead'])
+
+b_list = []
+g_list = []
+p_list = []
+for val in range(7):
+    bl = mpl.colors.rgb2hex(bmap(val / 6))
+    b_list.append(bl)
+
+    gl = mpl.colors.rgb2hex(gmap(val / 6))
+    g_list.append(gl)
+
+    pl = mpl.colors.rgb2hex(pmap(val / 6))
+    p_list.append(pl)
+
+print(b_list)
+print(g_list)
+print(p_list)

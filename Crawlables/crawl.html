@@ -182,11 +182,18 @@
 			    iconAnchor:   [15,15]
 			});
 
+			//var colorMapper = {
+			//		'walk' : ['#f1eef6','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b'],
+			//		'bike' : ['#edf8fb', '#ccece6', '#99d8c9', '#66c2a4', '#41ae76', '#238b45', '#005824'],
+			//		'transit' : ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486']
+			//};
+
 			var colorMapper = {
-					'walk' : ['#f1eef6','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#034e7b'],
-					'bike' : ['#edf8fb', '#ccece6', '#99d8c9', '#66c2a4', '#41ae76', '#238b45', '#005824'],
-					'transit' : ['#f2f0f7','#dadaeb','#bcbddc','#9e9ac8','#807dba','#6a51a3','#4a1486']
+					'walk' : ['#eceff4', '#d5dde8', '#bdcadc', '#a5b8d0', '#8da6c4', '#7593b8', '#5e81ac'],
+					'bike' : ['#eceff4', '#e0e7e3', '#d4dfd1', '#c7d6c0', '#bbceaf', '#afc69d', '#a3be8c'],
+					'transit' : ['#eceff4', '#e3dfe8', '#d9cfdc', '#d0bed0', '#c7aec5', '#bd9eb9', '#b48ead']
 			};
+
 
       function getColor(d) {
           return d > timeCut ? colorMapper[transitType][0]:
@@ -205,7 +212,7 @@
 							color: '#252525',
 							weight: 2,
 							opacity: 1,
-							fillOpacity: 0.8
+							fillOpacity: 1
           }
       };
 
