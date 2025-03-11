@@ -9,6 +9,7 @@
 		<link rel="stylesheet" href="map.css">
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="geolet.js"></script>
+		<script src="leaflet.geometryutil.js"></script>
   </head>
 	<body>
 		<div id="map"></div>
@@ -67,6 +68,8 @@
 			var transitType = 'bike';
 			var timeCut = 30;
 			var cityParam = window.location.search.substring(1)
+			var coords = [];
+			var idxs = [];
 
 			if (cityParam === ""){
 				cityParam = "Tor"
@@ -177,6 +180,9 @@
 					layer.on({
 							click: clickFeature
 					});
+
+					coords.push(feature.geometry.coordinates);
+					idxs.push(layer.feature.properties.id);
 			};
 
 			var homeIcon = L.icon({
@@ -296,6 +302,12 @@
 				matrixLayer.addData(matrix);
 			};
 
+			function geolocate(){
+				matrixLayer.clearLayers();
+				matrixLayer.addData(matrix);
+				map.fitBounds(brewLayer.getBounds());
+			};
+
 			for (let input of document.querySelectorAll('input.modes')) {
 				//Listen to 'change' event of all inputs
 				input.onchange = (e) => {
@@ -337,6 +349,45 @@
 			L.geolet({
 				position: 'topleft'
 			}).addTo(map);
+
+			//map.on('geolet_success', function (data) {console.log(data.latlng.lat)});
+			map.on('geolet_success', function (data) {
+				if (data.first) {
+					var hash = {};
+					for(var i = 0 ; i < coords.length; i += 1) {
+							hash[coords[i]] = i;
+					}
+
+					var user_loc = [data.latlng.lng, data.latlng.lat];
+					// console.log(user_loc);
+
+					var closestPt = L.GeometryUtil.closest(map, coords, user_loc, true);
+
+					// console.log(closestPt);
+					var lat_check = closestPt['lat'];
+					var lng_check = closestPt['lng'];
+
+					var val = Array(lat_check, lng_check, 0);
+
+					// console.log(val);
+					if(hash.hasOwnProperty(val)) {
+						id_val = hash[val];
+						var brew_loc = [coords[id_val][0], coords[id_val][1]]
+						// console.log(id_val)
+						// console.log(idxs[id_val]);
+						mainId = idxs[id_val];
+						geolocate();
+						console.log(user_loc);
+						console.log(brew_loc);
+						var line = L.polyline([
+							user_loc.reverse(),
+							brew_loc.reverse()
+						]);
+						map.fitBounds(line.getBounds());
+					};
+
+				};
+			});
 
     </script>
   </body>
