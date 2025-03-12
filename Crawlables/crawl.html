@@ -70,6 +70,7 @@
 			var cityParam = window.location.search.substring(1)
 			var coords = [];
 			var idxs = [];
+            var layers = {};
 
 			if (cityParam === ""){
 				cityParam = "Tor"
@@ -183,6 +184,7 @@
 
 					coords.push(feature.geometry.coordinates);
 					idxs.push(layer.feature.properties.id);
+                    layers[feature.properties.id] = feature.properties;
 			};
 
 			var homeIcon = L.icon({
@@ -302,12 +304,6 @@
 				matrixLayer.addData(matrix);
 			};
 
-			function geolocate(){
-				matrixLayer.clearLayers();
-				matrixLayer.addData(matrix);
-				map.fitBounds(brewLayer.getBounds());
-			};
-
 			for (let input of document.querySelectorAll('input.modes')) {
 				//Listen to 'change' event of all inputs
 				input.onchange = (e) => {
@@ -376,14 +372,17 @@
 						// console.log(id_val)
 						// console.log(idxs[id_val]);
 						mainId = idxs[id_val];
-						geolocate();
-						console.log(user_loc);
-						console.log(brew_loc);
+
+        				matrixLayer.clearLayers();
+        				matrixLayer.addData(matrix);
+
 						var line = L.polyline([
 							user_loc.reverse(),
 							brew_loc.reverse()
 						]);
 						map.fitBounds(line.getBounds());
+
+                        info.update(layers[mainId]);
 					};
 
 				};
