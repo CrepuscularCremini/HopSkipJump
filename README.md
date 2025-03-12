@@ -1,4 +1,4 @@
-![A Hop, Skip, & A Jump](./Graphics/LogoE.png)
+![A Hop, Skip, & A Jump](./Graphics/Logo.png)
 
 ### The Maps
 
@@ -34,3 +34,7 @@ While other changes are necessary in the industry and the community (and here I 
 - GO Station Access: Digitized from [Waterfront Regeneration Trust / Metrolynx](https://waterfronttrail.org/wp-content/uploads/2017/09/TrailtoGO_Mini_Guide_Feb18.pdf)
 
 The project largely uses the [Nord Theme](https://www.nordtheme.com/)
+
+***
+
+
