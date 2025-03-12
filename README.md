@@ -1,4 +1,4 @@
-![A Hop, Skip, & A Jump](./Graphics/Logo.png)
+![A Hop, Skip, & A Jump](./Graphics/logo.png)
 
 ### The Maps
 
