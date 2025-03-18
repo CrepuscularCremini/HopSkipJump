@@ -49,6 +49,8 @@
 						<p>Region Select:</p>
 						<select id="cityDrop">
 								<option value='Tor'>GHTA (Toronto)</option>
+								<option value='Van'>Vancouver (transit currently N/A)</option>
+								<option value='Det'>Detroit</option>
 								<option value='Den'>Denver Metro</option>
 								<option value='DMV'>DMV (DC)</option>
 								<option value='NY'>NY</option>
@@ -97,13 +99,19 @@
 							'DMV' : './DMV_brew.geojson',
 							'NY' : './NY_brew.geojson',
 							'TB' : './TB_brew.geojson',
-							'Hon' : './Honolulu_brew.geojson'};
+							'Hon' : './Honolulu_brew.geojson',
+							'Van' : './Vancouver_brew.geojson',
+							'Det' : './Detroit_brew.geojson',
+							};
 			var matrixrls = {'Tor' : './Toronto_matrix.geojson',
 							'Den' : './Denver_matrix.geojson',
 							'DMV' : './DMV_matrix.geojson',
 							'NY' : './NY_matrix.geojson',
 							'TB' : './TB_matrix.geojson',
-							'Hon' : './Honolulu_matrix.geojson'};
+							'Hon' : './Honolulu_matrix.geojson',
+							'Van' : './Vancouver_matrix.geojson',
+							'Det' : './Detroit_matrix.geojson',
+							};
 
 			var brewLayer = false;
 			var matrix = false;

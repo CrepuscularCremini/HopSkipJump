@@ -68,12 +68,14 @@ def hsjCalculator(df, osm, gtfs, departure, name):
 
     mat = walk_times.merge(bike_times, on = ['from_id', 'to_id'], how = 'outer').merge(transit_times, on = ['from_id', 'to_id'], how = 'outer')
 
-    df.to_file(f'SpiderMap/{name}_brew.geojson', driver = 'GeoJSON')
+    df.to_file(f'Crawlables/{name}_brew.geojson', driver = 'GeoJSON')
 
     mdf = df.merge(mat, left_on = 'id', right_on = 'to_id', how = 'right')
-    mdf.to_file(f'SpiderMap/{name}_matrix.geojson', driver = 'GeoJSON')
+    mdf.to_file(f'Crawlables/{name}_matrix.geojson', driver = 'GeoJSON')
 
-city = 'Vancouver'
+###
+
+city = 'DMV'
 from files import fps
 
 df = gpd.read_file(fps[city]['df'])
