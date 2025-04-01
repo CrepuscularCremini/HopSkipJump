@@ -6,7 +6,7 @@
 		 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-		<link rel="stylesheet" href="map.css">
+		<link rel="stylesheet" href="bespoke_trek.css">
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="geolet.js"></script>
   </head>
@@ -275,10 +275,10 @@
 			// method that we will use to update the control based on feature properties passed
 			info.update = function (props) {
 			    this._div.innerHTML = '<h4>Brewery Details</h4>' +  (props ?
-			        '<img src="home-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
+			        '<img src="walk-base.svg" height="15" width = "15"/>\t<a href=' + props.web + '><b>' + props.name + '</b></a><br />' +
 									props.addr + '</b><br />' +
 									props.phone
-			        : '<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="6" stroke="#2e3440" stroke-width="2" fill="#a3be8c" /></svg>Select a Brewery');
+			        : '<svg width="15" height="15" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="6" stroke="#2e3440" stroke-width="2" fill="#81a1c1" /></svg>Select a Brewery');
 			};
 							
 			info.addTo(map);
