@@ -41,17 +41,24 @@
 						</div>
 					</div>
 			</fieldset>
-			<fieldset class="inputs" id='distance'>
-				<legend>Time</legend>
-				<select id="distanceDrop">
-						<option value=30>30 minutes</option>
-						<option value=25>25 minutes</option>
-						<option value=20>20 minutes</option>
-						<option value=15>15 minutes</option>
-						<option value=10>10 minutes</option>
-						<option value=5>5 minutes</option>
-				</select>
-			</fieldset>
+            <div id='center'>
+			    <fieldset class="inputs" id='distance'>
+				    <legend>Time</legend>
+				    <select id="distanceDrop">
+						    <option value=30>30 minutes</option>
+						    <option value=25>25 minutes</option>
+						    <option value=20>20 minutes</option>
+						    <option value=15>15 minutes</option>
+						    <option value=10>10 minutes</option>
+						    <option value=5>5 minutes</option>
+				    </select>
+			    </fieldset>
+                <fieldset class='tutorials' id='tutorials'>
+                    <legend>Tutorials</legend>
+						<button type="button" id='tutorial' onclick="show_mobile()">Mobile</button>
+						<button type="button" id='tutorial' onclick="show_desktop()">Desktop</button>
+                </fieldset>
+            </div>
 			<fieldset class="inputs" id='region'>
 				<legend>Region</legend>
 				<div class = 'vert'>
@@ -69,13 +76,6 @@
 					<div><p></P></div>
 					<div>
 						<button type="button" id='reset' onclick="mapoff()">Reset View</button>
-					</div>
-					<div><p></P></div>
-					<div>
-                        <p>Tutorial</p>
-						<button type="button" id='tutorial' onclick="show_mobile()">Mobile</button>
-						<button type="button" id='tutorial' onclick="show_desktop()">Desktop</button>
-
 					</div>
 				</div>
 			</fieldset>

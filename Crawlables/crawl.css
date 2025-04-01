@@ -11,7 +11,7 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(1,1,1,0.5); /* Black background with opacity */
+  background-color: rgba(1,1,1,0.35); /* Black background with opacity */
   z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
 }
@@ -25,7 +25,7 @@ html, body {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(1,1,1,0.5); /* Black background with opacity */
+  background-color: rgba(1,1,1,0.35); /* Black background with opacity */
   z-index: 1000000; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
 }
@@ -67,13 +67,13 @@ html, body {
 }
 
 #mode {
-  flex: 30%;
+  flex: 25%;
   align-items: center;
   float: left;
 }
 
-#distance {
-  flex: 30%;
+#center {
+  flex: 40%;
 }
 
 /* #spacer {
@@ -81,7 +81,7 @@ html, body {
 } */
 
 #region {
-  flex: 40%;
+  flex: 30%;
 }
 
 .inputs {
