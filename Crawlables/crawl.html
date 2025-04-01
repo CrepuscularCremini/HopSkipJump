@@ -13,9 +13,13 @@
   </head>
 	<body>
 
-        <div id="overlay">
-			<button type="button" id='tutorial_close' onclick="close_tutorial()">Close</button>
+        <div id="mobile_overlay">
+		    <button type="button" id='tutorial_close' onclick="close_mobile()">Close</button>
             <img src="mobile_overlay.png" height="100%" width = "100%"/>
+        </div> 
+        <div id="desktop_overlay">
+		    <button type="button" id='tutorial_close' onclick="close_desktop()">Close</button>
+            <img src="desktop_overlay.png" height="100%" width = "100%"/>
         </div> 
 
 		<div id="map"></div>
@@ -68,20 +72,32 @@
 					</div>
 					<div><p></P></div>
 					<div>
-						<button type="button" id='tutorial' onclick="show_tutorial()">Tutorial</button>
+                        <p>Tutorial</p>
+						<button type="button" id='tutorial' onclick="show_mobile()">Mobile</button>
+						<button type="button" id='tutorial' onclick="show_desktop()">Desktop</button>
+
 					</div>
 				</div>
 			</fieldset>
 		</div>
     <script>
 
-            function show_tutorial() {
-              document.getElementById("overlay").style.display = "block";
+            function show_mobile() {
+              document.getElementById("mobile_overlay").style.display = "block";
             };
 
-            function close_tutorial() {
-              document.getElementById("overlay").style.display = "none";
+            function close_mobile() {
+              document.getElementById("mobile_overlay").style.display = "none";
             };
+
+            function show_desktop() {
+              document.getElementById("desktop_overlay").style.display = "block";
+            };
+
+            function close_desktop() {
+              document.getElementById("desktop_overlay").style.display = "none";
+            };
+
 
 			var mainId;
 			var reachIds = [];
