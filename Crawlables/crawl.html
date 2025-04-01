@@ -6,12 +6,18 @@
 		 <link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
-		<link rel="stylesheet" href="map.css">
+		<link rel="stylesheet" href="crawl.css">
 		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 		<script src="geolet.js"></script>
 		<script src="leaflet.geometryutil.js"></script>
   </head>
 	<body>
+
+        <div id="overlay">
+			<button type="button" id='tutorial_close' onclick="close_tutorial()">Close</button>
+            <img src="mobile_overlay.png" height="100%" width = "100%"/>
+        </div> 
+
 		<div id="map"></div>
 		<div id='options'>
 			<fieldset class="inputs" id='mode'>
@@ -43,10 +49,9 @@
 				</select>
 			</fieldset>
 			<fieldset class="inputs">
-				<legend>View</legend>
+				<legend>Region</legend>
 				<div class = 'vert'>
 					<div>
-						<p>Region:</p>
 						<select id="cityDrop">
 								<option value='Tor'>GTHA (Toronto)</option>
 								<option value='Van'>Vancouver</option>
@@ -61,10 +66,22 @@
 					<div>
 						<button type="button" id='reset' onclick="mapoff()">Reset View</button>
 					</div>
+					<div>
+						<button type="button" id='tutorial' onclick="show_tutorial()">Tutorial</button>
+					</div>
 				</div>
 			</fieldset>
 		</div>
     <script>
+
+            function show_tutorial() {
+              document.getElementById("overlay").style.display = "block";
+            };
+
+            function close_tutorial() {
+              document.getElementById("overlay").style.display = "none";
+            };
+
 			var mainId;
 			var reachIds = [];
 			var transitType = 'bike';
