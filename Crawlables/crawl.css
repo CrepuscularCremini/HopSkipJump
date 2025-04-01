@@ -73,15 +73,15 @@ html, body {
 }
 
 #distance {
-  flex: 20%;
+  flex: 30%;
 }
 
 /* #spacer {
   flex: 20%;
 } */
 
-#reset {
-  flex: 30%;
+#region {
+  flex: 40%;
 }
 
 .inputs {
