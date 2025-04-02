@@ -1,5 +1,9 @@
 ![A Hop, Skip, & A Jump](./Graphics/logo.png)
 
+This project seeks to use creative mapping as a tool to connect people to their neighbourhood breweries and increase exposure to craft beer both as a drink and a community.
+
+**Click on the links below to get started!** and view the tutorials on the page if you need help.
+
 ### The Maps
 
 - [Crawlables](https://crepuscularcremini.github.io/HopSkipJump/Crawlables/crawl.html) - For the crawlers, meant for on-the-fly brewery crawls, see the walk, bike, and transit times to all the breweries in the area (or filter by time). Geolocating (upper left) shows the closest brewery to the user. Other regions are available from the drop down in the lower right.
