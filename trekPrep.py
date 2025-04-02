@@ -84,9 +84,9 @@ bj.to_file('Trekkables/ontario_trek_brews.geojson', driver = 'GeoJSON')
 
 ## Create color maps
 
-bmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#5e81ac'])
+bmap = LinearSegmentedColormap.from_list('blues', ['#eceff4', '#5e81ac'])
 gmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#a3be8c'])
-pmap = LinearSegmentedColormap.from_list('greens', ['#eceff4', '#b48ead'])
+pmap = LinearSegmentedColormap.from_list('purples', ['#eceff4', '#b48ead'])
 
 b_list = []
 g_list = []
