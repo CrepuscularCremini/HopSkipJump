@@ -10,9 +10,9 @@ import datetime
 
 ##
 
-brews = gpd.read_file('Data/ontario_breweries.geojson')
+brews = gpd.read_file('Breweries/OntarioBreweries')
 stations = gpd.read_file('Trekkables/ontario_stations.geojson')
-lanes = gpd.read_file('Data/ontario_bike.geojson')
+lanes = gpd.read_file('Trekkables/ontario_bics.geojson')
 
 brews.to_crs(epsg = 2952, inplace = True)
 stations.to_crs(epsg = 2952, inplace = True)
@@ -20,25 +20,22 @@ lanes.to_crs(epsg = 2952, inplace = True)
 
 ## Lane Classifier
 
-bics = {'cycle_track' : 'High',
-'local_street_bikeway' : 'High',
-'bike_path' : 'High',
-
-'multi_use_path' : 'Medium',
-
-'painted_bike_lane' : 'Low'}
-
-# 'shared_roadway',
-# 'major_shared_roadway',
-# 'gravel_trail',
-
-lanes['Comfort'] = lanes.canbics_class.map(bics)
-lanes.dropna(subset = 'Comfort', inplace = True)
-
-lanes[['fid', 'Comfort', 'geometry']].to_crs(epsg = 4326).to_file('Trekkables/ontario_bics.geojson')
-
-dl = lanes.dissolve('Comfort').reset_index().explode()
-dl['length'] = dl.length
+# bics = {'cycle_track' : 'High',
+# 'local_street_bikeway' : 'High',
+# 'bike_path' : 'High',
+#
+# 'multi_use_path' : 'Medium',
+#
+# 'painted_bike_lane' : 'Low'}
+#
+# # 'shared_roadway',
+# # 'major_shared_roadway',
+# # 'gravel_trail',
+#
+# lanes['Comfort'] = lanes.canbics_class.map(bics)
+# lanes.dropna(subset = 'Comfort', inplace = True)
+#
+# lanes[['fid', 'Comfort', 'geometry']].to_crs(epsg = 4326).to_file('Trekkables/ontario_bics.geojson')
 
 ## Buffer (simple)
 
@@ -47,11 +44,11 @@ lanes['buffer'] = lanes.buffer(1000)
 
 sa = stations.set_geometry('buffer')[['buffer']]
 sa['StationArea'] = 'Yes'
-sa = sa.dissolve('StationArea')
+sa = sa.dissolve('StationArea').reset_index()
 
 la = lanes.set_geometry('buffer')[['buffer']]
 la['LaneArea'] = 'Yes'
-la = la.dissolve('LaneArea')
+la = la.dissolve('LaneArea').reset_index()
 
 ## Overlay
 

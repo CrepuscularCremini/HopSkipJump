@@ -144,7 +144,9 @@ nb = be.Brewery.str.lower().values.tolist()
 
 iss = '''Steadfast - not open on Tuesdays
 Louis Cifer - perm closed
-3 Brewers - big chain'''
+3 Brewers - big chain
+Steamwhistle Etobicoke - nope
+Big Rock - closed'''
 
 iss = [x.split('-')[0].strip().lower() for x in iss.split('\n')]
 
@@ -155,4 +157,4 @@ ex_list = nb + iss
 gdf = gpd.read_file(fp)
 gdf['brewery_filter'] = gdf.apply(brewsdayFilter, args = [ex_list], axis = 1)
 
-t = brewsdayPick(gdf, imped = 'all_imped', impval = 1, bike_weight = 1, transit_weight = 2, bike_max = 30, transit_max = 40, filter_col = 'brewery_filter')
+brewsdayPick(gdf, imped = 'all_imped', impval = 1, bike_weight = 1, transit_weight = 2, bike_max = 30, transit_max = 40, filter_col = 'brewery_filter')

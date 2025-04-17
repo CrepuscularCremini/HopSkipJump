@@ -75,7 +75,7 @@ def hsjCalculator(df, osm, gtfs, departure, name):
 
 ###
 
-city = 'DMV'
+city = 'Toronto'
 from files import fps
 
 df = gpd.read_file(fps[city]['df'])
