@@ -1,4 +1,4 @@
-import fiona
+# import fiona
 import pandas as pd
 import geopandas as gpd
 import r5py
@@ -106,7 +106,7 @@ def brewsdayPick(vdf, imped = 'all_imped', impval = 2, bike_weight = 1, transit_
 
 ## Create Matrix
 
-fp = r"Breweries\brewsday_picker.geojson"
+fp = "Breweries/brewsday_picker.geojson"
 
 run_matrix = False
 if run_matrix:
@@ -137,7 +137,7 @@ be = pd.read_csv(ep)
 be['Date'] = pd.to_datetime(be.Date, format = "%m/%d/%y")
 
 tod = np.datetime64(datetime.datetime.today())
-buff = tod - np.timedelta64(150, 'D')
+buff = tod - np.timedelta64(180, 'D')
 
 be.query('Date >= @buff', inplace = True)
 nb = be.Brewery.str.lower().values.tolist()
@@ -145,8 +145,9 @@ nb = be.Brewery.str.lower().values.tolist()
 iss = '''Steadfast - not open on Tuesdays
 Louis Cifer - perm closed
 3 Brewers - big chain
-Steamwhistle Etobicoke - nope
-Big Rock - closed'''
+Steam Whistle Etobicoke - nope
+Big Rock - closed
+Belgian Moon - bad vibes'''
 
 iss = [x.split('-')[0].strip().lower() for x in iss.split('\n')]
 
